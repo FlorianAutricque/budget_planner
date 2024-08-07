@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import useLocalStorage from "../utils/LocalStorage";
 
 function PageMonth() {
   const { monthId } = useParams();
   const [value, setValue] = useState("");
+  const [displayValue, setDisplayValue] = useLocalStorage("displayValue", {});
+  const [elements, setElements] = useState([]);
+  const btnAddExpenseRef = useRef(null);
 
   const monthNames = {
     1: "January",
@@ -22,12 +26,53 @@ function PageMonth() {
 
   const monthName = monthNames[monthId] || "Unknown Month";
 
+  useEffect(() => {
+    setValue(displayValue[monthName] || 0);
+
+    // Retrieve elements from local storage for the current month
+    const storedElements =
+      JSON.parse(window.localStorage.getItem(`elements-${monthName}`)) || [];
+    setElements(storedElements);
+  }, [monthName, displayValue]);
+
+  function handleClick() {
+    setDisplayValue((prev) => ({
+      ...prev,
+      [monthName]: value,
+    }));
+  }
+
+  function addElement() {
+    const newElement = `Element added in ${monthName} at ${new Date().toLocaleString()}`;
+
+    // Update elements state
+    const updatedElements = [...elements, newElement];
+    setElements(updatedElements);
+
+    // Save updated elements in local storage
+    window.localStorage.setItem(
+      `elements-${monthName}`,
+      JSON.stringify(updatedElements)
+    );
+  }
+
+  useEffect(() => {
+    const btnAddExpense = btnAddExpenseRef.current;
+    if (btnAddExpense) {
+      btnAddExpense.addEventListener("click", addElement);
+    }
+
+    return () => {
+      if (btnAddExpense) {
+        btnAddExpense.removeEventListener("click", addElement);
+      }
+    };
+  }, [elements, monthName]);
+
   return (
     <div>
-      {monthName}
-
+      <h1>{monthName}</h1>
       <div>
-        <p>salary : {value}</p>
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -35,6 +80,20 @@ function PageMonth() {
           type="number"
           placeholder="Input your salary"
         />
+        <button onClick={handleClick}>Add</button>
+        <p>Salary: {displayValue[monthName] || 0}</p>
+
+        <button id="btnAddExpense" ref={btnAddExpenseRef}>
+          ++++++
+        </button>
+
+        <div>
+          {elements.map((element, index) => (
+            <div key={index} className="Container__newElement">
+              {element}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
