@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
+import SumInput from "./SumInputEachExpense";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -8,6 +9,10 @@ function PageMonth() {
   const [displayValue, setDisplayValue] = useLocalStorage("displayValue", {});
   const [elements, setElements] = useState([]);
   const btnAddExpenseRef = useRef(null);
+
+  const [showModalAddExpense, setShowModalAddExpense] = useState(false);
+  const [valueNameExpense, setValueNameExpense] = useState("");
+  const [expenses, setExpenses] = useState([]);
 
   const monthNames = {
     1: "January",
@@ -26,13 +31,17 @@ function PageMonth() {
 
   const monthName = monthNames[monthId] || "Unknown Month";
 
+  //LOCALSTORAGE
   useEffect(() => {
     setValue(displayValue[monthName] || 0);
 
-    // Retrieve elements from local storage for the current month
     const storedElements =
       JSON.parse(window.localStorage.getItem(`elements-${monthName}`)) || [];
     setElements(storedElements);
+
+    const storedExpenses =
+      JSON.parse(window.localStorage.getItem(`expenses-${monthName}`)) || [];
+    setExpenses(storedExpenses);
   }, [monthName, displayValue]);
 
   function handleClick() {
@@ -42,32 +51,54 @@ function PageMonth() {
     }));
   }
 
-  function addElement() {
-    const newElement = `Element added in ${monthName} at ${new Date().toLocaleString()}`;
+  //
+  // function addElement() {
+  //   const newElement = "";
+  //   const updatedElements = [...elements, newElement];
+  //   setElements(updatedElements);
 
-    // Update elements state
-    const updatedElements = [...elements, newElement];
-    setElements(updatedElements);
+  //   //LOCALSTORAGE SET EL
+  //   window.localStorage.setItem(
+  //     `elements-${monthName}`,
+  //     JSON.stringify(updatedElements)
+  //   );
+  // }
 
-    // Save updated elements in local storage
-    window.localStorage.setItem(
-      `elements-${monthName}`,
-      JSON.stringify(updatedElements)
-    );
+  // useEffect(() => {
+  //   const btnAddExpense = btnAddExpenseRef.current;
+  //   if (btnAddExpense) {
+  //     btnAddExpense.addEventListener("click", addElement);
+  //   }
+
+  //   return () => {
+  //     if (btnAddExpense) {
+  //       btnAddExpense.removeEventListener("click", addElement);
+  //     }
+  //   };
+  // }, [elements, monthName]);
+
+  function handleShowModalAddExpense() {
+    setShowModalAddExpense(!showModalAddExpense);
   }
 
-  useEffect(() => {
-    const btnAddExpense = btnAddExpenseRef.current;
-    if (btnAddExpense) {
-      btnAddExpense.addEventListener("click", addElement);
-    }
+  function addNameOfExpense(e) {
+    setValueNameExpense(e.target.value);
+  }
 
-    return () => {
-      if (btnAddExpense) {
-        btnAddExpense.removeEventListener("click", addElement);
-      }
-    };
-  }, [elements, monthName]);
+  function addExpense() {
+    if (valueNameExpense.trim() !== "") {
+      const updatedExpenses = [...expenses, valueNameExpense];
+      setExpenses(updatedExpenses); // Add the expense to the list
+      setValueNameExpense(""); // Clear the input field
+
+      // Save expenses to localStorage for the current month
+      window.localStorage.setItem(
+        `expenses-${monthName}`,
+        JSON.stringify(updatedExpenses)
+      );
+    }
+    setShowModalAddExpense(!showModalAddExpense);
+  }
 
   return (
     <div>
@@ -83,14 +114,32 @@ function PageMonth() {
         <button onClick={handleClick}>Add</button>
         <p>Salary: {displayValue[monthName] || 0}</p>
 
-        <button id="btnAddExpense" ref={btnAddExpenseRef}>
-          ++++++
+        <button onClick={handleShowModalAddExpense} className="">
+          CLICK HERE
         </button>
+        {showModalAddExpense && (
+          <div>
+            <h3>Add name of expense here:</h3>
+            <input
+              value={valueNameExpense}
+              type="text"
+              placeholder="Fuel, Grocery ..."
+              onChange={addNameOfExpense}
+            />
+            <button onClick={addExpense} ref={btnAddExpenseRef}>
+              ADD New Expense
+            </button>
+          </div>
+        )}
 
         <div>
-          {elements.map((element, index) => (
-            <div key={index} className="Container__newElement">
-              {element}
+          {expenses.map((expense, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-2 mb-10 border border-red-500"
+            >
+              <SumInput />
+              {expense}
             </div>
           ))}
         </div>
