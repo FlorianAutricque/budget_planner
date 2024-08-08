@@ -77,21 +77,23 @@ function PageMonth() {
   //   };
   // }, [elements, monthName]);
 
+  //SHOW MODAL TO ASS AN EXPENSE
   function handleShowModalAddExpense() {
     setShowModalAddExpense(!showModalAddExpense);
   }
 
+  //ADD NAME OF EXPENSE
   function addNameOfExpense(e) {
     setValueNameExpense(e.target.value);
   }
 
-  function addExpense() {
+  //ADD NEW ELEMENT
+  function addNewExpense() {
     if (valueNameExpense.trim() !== "") {
       const updatedExpenses = [...expenses, valueNameExpense];
-      setExpenses(updatedExpenses); // Add the expense to the list
-      setValueNameExpense(""); // Clear the input field
+      setExpenses(updatedExpenses);
+      setValueNameExpense("");
 
-      // Save expenses to localStorage for the current month
       window.localStorage.setItem(
         `expenses-${monthName}`,
         JSON.stringify(updatedExpenses)
@@ -126,7 +128,7 @@ function PageMonth() {
               placeholder="Fuel, Grocery ..."
               onChange={addNameOfExpense}
             />
-            <button onClick={addExpense} ref={btnAddExpenseRef}>
+            <button onClick={addNewExpense} ref={btnAddExpenseRef}>
               ADD New Expense
             </button>
           </div>
@@ -138,7 +140,7 @@ function PageMonth() {
               key={index}
               className="flex flex-col gap-2 mb-10 border border-red-500"
             >
-              <SumInput />
+              <SumInput monthName={monthName} />
               {expense}
             </div>
           ))}
