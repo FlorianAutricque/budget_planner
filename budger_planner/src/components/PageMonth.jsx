@@ -4,6 +4,8 @@ import useLocalStorage from "../utils/LocalStorage";
 import SumInputEachExpense from "./SumInputEachExpense";
 import DeleteExpense from "./DeleteExpense";
 
+import ReactEcharts from "echarts-for-react";
+
 function PageMonth() {
   const { monthId } = useParams();
 
@@ -86,9 +88,48 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
+  //////////////////////////////
+
+  const getOption = () => {
+    return {
+      title: {
+        text: monthName,
+        left: "center",
+      },
+      tooltip: {
+        trigger: "item",
+      },
+      legend: {
+        orient: "vertical",
+        left: "right",
+      },
+      series: [
+        {
+          name: "Expense Categories",
+          type: "pie",
+          radius: ["30%", "70%"],
+          roseType: "area",
+          label: {
+            show: false,
+            position: "outside",
+          },
+          data: expensesName.map((expense) => ({
+            value:
+              parseFloat(
+                localStorage.getItem(`sum-${monthName}-${expense.id}`)
+              ) || 0,
+            name: expense.name,
+          })),
+        },
+      ],
+    };
+  };
+
   return (
     <div>
       <h1>{monthName}</h1>
+      <ReactEcharts option={getOption()} />
+
       <div>
         <input
           value={value}
