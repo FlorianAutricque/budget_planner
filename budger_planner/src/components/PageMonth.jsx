@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
 import SumInputEachExpense from "./SumInputEachExpense";
 import DeleteExpense from "./DeleteExpense";
-
-import ReactEcharts from "echarts-for-react";
+import PieChart from "./PieChart";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -88,47 +87,10 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
-  //////////////////////////////
-
-  const getOption = () => {
-    return {
-      title: {
-        text: monthName,
-        left: "center",
-      },
-      tooltip: {
-        trigger: "item",
-      },
-      legend: {
-        orient: "vertical",
-        left: "right",
-      },
-      series: [
-        {
-          name: "Expense Categories",
-          type: "pie",
-          radius: ["30%", "70%"],
-          roseType: "area",
-          label: {
-            show: false,
-            position: "outside",
-          },
-          data: expensesName.map((expense) => ({
-            value:
-              parseFloat(
-                localStorage.getItem(`sum-${monthName}-${expense.id}`)
-              ) || 0,
-            name: expense.name,
-          })),
-        },
-      ],
-    };
-  };
-
   return (
     <div>
       <h1>{monthName}</h1>
-      <ReactEcharts option={getOption()} />
+      <PieChart monthName={monthName} expensesName={expensesName} />
 
       <div>
         <input
