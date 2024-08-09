@@ -1,18 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
-import SumInput from "./SumInputEachExpense";
+import SumInputEachExpense from "./SumInputEachExpense";
 
 function PageMonth() {
   const { monthId } = useParams();
+
   const [value, setValue] = useState("");
   const [displayValue, setDisplayValue] = useLocalStorage("displayValue", {});
-  const [elements, setElements] = useState([]);
-  const btnAddExpenseRef = useRef(null);
 
   const [showModalAddExpense, setShowModalAddExpense] = useState(false);
   const [valueNameExpense, setValueNameExpense] = useState("");
-  const [expenses, setExpenses] = useState([]);
+  const [expensesName, setExpensesName] = useState([]);
+  const [overallSum, setOverallSum] = useState(0);
 
   const monthNames = {
     1: "January",
@@ -35,13 +35,17 @@ function PageMonth() {
   useEffect(() => {
     setValue(displayValue[monthName] || 0);
 
-    const storedElements =
-      JSON.parse(window.localStorage.getItem(`elements-${monthName}`)) || [];
-    setElements(storedElements);
-
     const storedExpenses =
       JSON.parse(window.localStorage.getItem(`expenses-${monthName}`)) || [];
-    setExpenses(storedExpenses);
+    setExpensesName(storedExpenses);
+
+    let initialOverallSum = 0;
+    storedExpenses.forEach((expense) => {
+      const storedSum =
+        parseFloat(localStorage.getItem(`sum-${monthName}-${expense.id}`)) || 0;
+      initialOverallSum += storedSum;
+    });
+    setOverallSum(initialOverallSum);
   }, [monthName, displayValue]);
 
   function handleClick() {
@@ -51,47 +55,19 @@ function PageMonth() {
     }));
   }
 
-  //
-  // function addElement() {
-  //   const newElement = "";
-  //   const updatedElements = [...elements, newElement];
-  //   setElements(updatedElements);
-
-  //   //LOCALSTORAGE SET EL
-  //   window.localStorage.setItem(
-  //     `elements-${monthName}`,
-  //     JSON.stringify(updatedElements)
-  //   );
-  // }
-
-  // useEffect(() => {
-  //   const btnAddExpense = btnAddExpenseRef.current;
-  //   if (btnAddExpense) {
-  //     btnAddExpense.addEventListener("click", addElement);
-  //   }
-
-  //   return () => {
-  //     if (btnAddExpense) {
-  //       btnAddExpense.removeEventListener("click", addElement);
-  //     }
-  //   };
-  // }, [elements, monthName]);
-
-  //SHOW MODAL TO ASS AN EXPENSE
   function handleShowModalAddExpense() {
     setShowModalAddExpense(!showModalAddExpense);
   }
 
-  //ADD NAME OF EXPENSE
   function addNameOfExpense(e) {
     setValueNameExpense(e.target.value);
   }
 
-  //ADD NEW ELEMENT
   function addNewExpense() {
     if (valueNameExpense.trim() !== "") {
-      const updatedExpenses = [...expenses, valueNameExpense];
-      setExpenses(updatedExpenses);
+      const newExpense = { id: Date.now(), name: valueNameExpense };
+      const updatedExpenses = [...expensesName, newExpense];
+      setExpensesName(updatedExpenses);
       setValueNameExpense("");
 
       window.localStorage.setItem(
@@ -100,6 +76,32 @@ function PageMonth() {
       );
     }
     setShowModalAddExpense(!showModalAddExpense);
+  }
+
+  function handleSumChange(expenseSum) {
+    setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
+  }
+
+  function handleDeleteExpense(expenseId) {
+    const deletedExpenseSum =
+      parseFloat(localStorage.getItem(`sum-${monthName}-${expenseId}`)) || 0;
+    const updatedExpenses = expensesName.filter(
+      (expense) => expense.id !== expenseId
+    );
+    setExpensesName(updatedExpenses);
+
+    setOverallSum((prevOverallSum) => prevOverallSum - deletedExpenseSum);
+
+    if (updatedExpenses.length === 0) {
+      window.localStorage.setItem(`sum-${monthName}`, 0);
+    }
+
+    window.localStorage.setItem(
+      `expenses-${monthName}`,
+      JSON.stringify(updatedExpenses)
+    );
+
+    localStorage.removeItem(`sum-${monthName}-${expenseId}`);
   }
 
   return (
@@ -116,9 +118,7 @@ function PageMonth() {
         <button onClick={handleClick}>Add</button>
         <p>Salary: {displayValue[monthName] || 0}</p>
 
-        <button onClick={handleShowModalAddExpense} className="">
-          CLICK HERE
-        </button>
+        <button onClick={handleShowModalAddExpense}>CLICK HERE</button>
         {showModalAddExpense && (
           <div>
             <h3>Add name of expense here:</h3>
@@ -128,23 +128,29 @@ function PageMonth() {
               placeholder="Fuel, Grocery ..."
               onChange={addNameOfExpense}
             />
-            <button onClick={addNewExpense} ref={btnAddExpenseRef}>
-              ADD New Expense
-            </button>
+            <button onClick={addNewExpense}>ADD New Expense</button>
           </div>
         )}
 
         <div>
-          {expenses.map((expense, index) => (
+          {expensesName.map((expense) => (
             <div
-              key={index}
+              key={expense.id}
               className="flex flex-col gap-2 mb-10 border border-red-500"
             >
-              <SumInput monthName={monthName} />
-              {expense}
+              <SumInputEachExpense
+                monthName={monthName}
+                expenseId={expense.id}
+                onSumChange={handleSumChange}
+              />
+              {expense.name}
+              <button onClick={() => handleDeleteExpense(expense.id)}>
+                Delete
+              </button>
             </div>
           ))}
         </div>
+        <p>Overall Sum: {overallSum}</p>
       </div>
     </div>
   );

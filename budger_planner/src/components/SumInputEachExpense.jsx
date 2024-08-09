@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
 
-function SumInput({ monthName }) {
+function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
   const [inputValue, setInputValue] = useState("");
   const [sum, setSum] = useState(0);
 
-  //LOCALSTORAGE
   useEffect(() => {
-    const storedSum = localStorage.getItem(`sum-${monthName}`);
+    const storedSum = localStorage.getItem(`sum-${monthName}-${expenseId}`);
     if (storedSum) {
       setSum(parseFloat(storedSum));
     }
-  }, [monthName]);
+  }, [monthName, expenseId]);
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
-  //CALCULATION OF VALUE INSIDE EL OF EXPENSE
   const handleAddValue = () => {
     const numericValue = parseFloat(inputValue);
     if (!isNaN(numericValue)) {
       const newSum = sum + numericValue;
       setSum(newSum);
-      localStorage.setItem(`sum-${monthName}`, newSum);
+      localStorage.setItem(`sum-${monthName}-${expenseId}`, newSum);
       setInputValue("");
+      onSumChange(newSum);
     }
   };
 
@@ -40,4 +40,4 @@ function SumInput({ monthName }) {
   );
 }
 
-export default SumInput;
+export default SumInputEachExpense;
