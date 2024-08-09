@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
 import SumInputEachExpense from "./SumInputEachExpense";
+import DeleteExpense from "./DeleteExpense";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -55,14 +56,17 @@ function PageMonth() {
     }));
   }
 
+  //SHOW MODAL TO ADD AN EXPENSE
   function handleShowModalAddExpense() {
     setShowModalAddExpense(!showModalAddExpense);
   }
 
+  //ADD A NAME TO THAT EXPENSE
   function addNameOfExpense(e) {
     setValueNameExpense(e.target.value);
   }
 
+  //ADD THAT NEw EXPENSE
   function addNewExpense() {
     if (valueNameExpense.trim() !== "") {
       const newExpense = { id: Date.now(), name: valueNameExpense };
@@ -80,28 +84,6 @@ function PageMonth() {
 
   function handleSumChange(expenseSum) {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
-  }
-
-  function handleDeleteExpense(expenseId) {
-    const deletedExpenseSum =
-      parseFloat(localStorage.getItem(`sum-${monthName}-${expenseId}`)) || 0;
-    const updatedExpenses = expensesName.filter(
-      (expense) => expense.id !== expenseId
-    );
-    setExpensesName(updatedExpenses);
-
-    setOverallSum((prevOverallSum) => prevOverallSum - deletedExpenseSum);
-
-    if (updatedExpenses.length === 0) {
-      window.localStorage.setItem(`sum-${monthName}`, 0);
-    }
-
-    window.localStorage.setItem(
-      `expenses-${monthName}`,
-      JSON.stringify(updatedExpenses)
-    );
-
-    localStorage.removeItem(`sum-${monthName}-${expenseId}`);
   }
 
   return (
@@ -144,9 +126,13 @@ function PageMonth() {
                 onSumChange={handleSumChange}
               />
               {expense.name}
-              <button onClick={() => handleDeleteExpense(expense.id)}>
-                Delete
-              </button>
+              <DeleteExpense
+                monthName={monthName}
+                expensesName={expensesName}
+                setExpensesName={setExpensesName}
+                expense={expense}
+                setOverallSum={setOverallSum}
+              />
             </div>
           ))}
         </div>
