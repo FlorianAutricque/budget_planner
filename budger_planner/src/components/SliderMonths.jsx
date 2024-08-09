@@ -13,7 +13,7 @@ function SliderMonths() {
     { id: 9, nameMonth: "September" },
     { id: 10, nameMonth: "October" },
     { id: 11, nameMonth: "November" },
-    { id: 12, nameMonth: "Januray" },
+    { id: 12, nameMonth: "December" },
   ];
 
   function sliderLeft() {
