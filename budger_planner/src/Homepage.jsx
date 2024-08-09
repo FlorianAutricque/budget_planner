@@ -1,5 +1,18 @@
 import { NavLink } from "react-router-dom";
 
+import {
+  closestCorners,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { useState } from "react";
+import Column from "./components/Column";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+
 function Homepage() {
   const months = [
     { id: 1, nameMonth: "Januray" },
@@ -21,6 +34,38 @@ function Homepage() {
   const month = months[currentMonthIndex];
   const name = month ? month.nameMonth : "Unknown Month";
 
+  const [tasks, setTasks] = useState([
+    { id: 1, title: "one" },
+    { id: 2, title: "two" },
+    { id: 3, title: "three" },
+  ]);
+
+  const getTaskPos = (id) => tasks.findIndex((task) => task.id === id);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    // If `over` is null, do nothing
+    if (!over) return;
+
+    if (active.id !== over.id) {
+      setTasks((tasks) => {
+        const originalPos = getTaskPos(active.id);
+        const newPos = getTaskPos(over.id);
+
+        return arrayMove(tasks, originalPos, newPos);
+      });
+    }
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   return (
     <div>
       <h2>Welcome to your budget planner</h2>
@@ -28,6 +73,13 @@ function Homepage() {
       <p>We are in {name}, let&apos;s track our budget</p>
 
       <NavLink to={`/month/${month.id}`}>Start now</NavLink>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+      >
+        <Column tasks={tasks} />
+      </DndContext>
     </div>
   );
 }

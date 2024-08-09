@@ -87,6 +87,8 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
+  ////////////////////////////
+
   return (
     <div>
       <h1>{monthName}</h1>
