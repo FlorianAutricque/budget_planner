@@ -16,10 +16,14 @@ function PieChart({ monthName, expensesName }) {
       },
       series: [
         {
-          name: "Expense Categories",
+          name: expensesName.length === 0 ? "" : "Expense Categories",
           type: "pie",
-          radius: ["30%", "70%"],
-          roseType: "area",
+          radius: ["40%", "70%"],
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: "#fff",
+            borderWidth: 2,
+          },
           label: {
             show: false,
             position: "outside",
@@ -35,7 +39,11 @@ function PieChart({ monthName, expensesName }) {
       ],
     };
   };
-  return <ReactEcharts option={getOption()} />;
+  return (
+    <div className="bg-[#ffffff] rounded-3xl shadow-md">
+      <ReactEcharts option={getOption()} />
+    </div>
+  );
 }
 
 export default PieChart;

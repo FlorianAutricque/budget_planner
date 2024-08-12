@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useState } from "react";
 
 function SliderMonths() {
   const months = [
@@ -16,6 +18,16 @@ function SliderMonths() {
     { id: 12, nameMonth: "December" },
   ];
 
+  const [isActive, setIsActive] = useState(false);
+
+  const toggleActiveClass = () => {
+    setIsActive(!isActive);
+  };
+
+  const removeActive = () => {
+    setIsActive(false);
+  };
+
   function sliderLeft() {
     const slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft - 200;
@@ -27,27 +39,36 @@ function SliderMonths() {
   }
 
   return (
-    <div>
-      <div className="flex gap-2">
+    <div className="bg-red-100 pt-[2rem]">
+      <div className="flex items-center gap-2 pb-2">
         <p className="cursor-pointer" onClick={sliderLeft}>
-          ICI
+          <FaArrowLeft />
         </p>
         <div
           id="slider"
-          className="flex gap-8 overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
+          className="hide-scrollbar flex gap-8 overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
+          onClick={toggleActiveClass}
         >
           {months.map((month) => (
-            <NavLink
-              to={`/month/${month.id}`}
-              className="list-none"
-              key={month.id}
-            >
-              {month.nameMonth}
-            </NavLink>
+            <>
+              <div onClick={removeActive}>
+                <NavLink
+                  to={`/month/${month.id}`}
+                  key={month.id}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-white border-b border-white z-20 font-bold"
+                      : ""
+                  }
+                >
+                  {month.nameMonth}
+                </NavLink>
+              </div>
+            </>
           ))}
         </div>
         <p className="cursor-pointer" onClick={sliderRight}>
-          ICI
+          <FaArrowRight />
         </p>
       </div>
     </div>

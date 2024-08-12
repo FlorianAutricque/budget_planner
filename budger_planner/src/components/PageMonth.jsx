@@ -87,7 +87,7 @@ function PageMonth() {
   }
 
   return (
-    <div>
+    <div className="px-[1rem]">
       <h1>{monthName}</h1>
       <PieChart monthName={monthName} expensesName={expensesName} />
 

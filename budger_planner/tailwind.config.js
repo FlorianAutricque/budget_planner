@@ -4,5 +4,21 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities(
+        {
+          ".hide-scrollbar": {
+            overflowY: "hidden",
+            "scrollbar-width": "none", // Firefox
+            "-ms-overflow-style": "none", // IE and Edge
+          },
+          ".hide-scrollbar::-webkit-scrollbar": {
+            display: "none", // Chrome, Safari
+          },
+        },
+        ["responsive", "hover"]
+      );
+    },
+  ],
 };
