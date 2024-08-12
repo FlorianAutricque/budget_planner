@@ -1,27 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
-import SumInputEachExpense from "./SumInputEachExpense";
-import DeleteExpense from "./DeleteExpense";
-import PieChart from "./PieChart";
 
-import {
-  closestCorners,
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import Column from "./Column";
+import PieChart from "./PieChart";
+import DragAndDrop from "./DragAndDrop";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -104,40 +86,6 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
-  // DND LOGIC
-  const getExpensePos = (id) =>
-    expensesName.findIndex((expense) => expense.id === id);
-
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    if (active.id !== over.id) {
-      setExpensesName((expenses) => {
-        const originalPos = getExpensePos(active.id);
-        const newPos = getExpensePos(over.id);
-
-        const updatedExpenses = arrayMove(expenses, originalPos, newPos);
-
-        window.localStorage.setItem(
-          `expenses-${monthName}`,
-          JSON.stringify(updatedExpenses)
-        );
-
-        return updatedExpenses;
-      });
-    }
-  };
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
   return (
     <div>
       <h1>{monthName}</h1>
@@ -169,35 +117,13 @@ function PageMonth() {
         )}
 
         <div>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={expensesName}
-              strategy={verticalListSortingStrategy}
-            >
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCorners}
-                onDragEnd={handleDragEnd}
-              >
-                <SortableContext
-                  items={expensesName}
-                  strategy={verticalListSortingStrategy}
-                >
-                  <Column
-                    tasks={expensesName}
-                    monthName={monthName}
-                    onSumChange={handleSumChange}
-                    setExpensesName={setExpensesName}
-                    setOverallSum={setOverallSum}
-                  />
-                </SortableContext>
-              </DndContext>
-            </SortableContext>
-          </DndContext>
+          <DragAndDrop
+            expensesName={expensesName}
+            setExpensesName={setExpensesName}
+            monthName={monthName}
+            handleSumChange={handleSumChange}
+            setOverallSum={setOverallSum}
+          />
         </div>
         <p>Overall Sum: {overallSum}</p>
       </div>
