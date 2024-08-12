@@ -45,7 +45,6 @@ function Homepage() {
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
-    // If `over` is null, do nothing
     if (!over) return;
 
     if (active.id !== over.id) {

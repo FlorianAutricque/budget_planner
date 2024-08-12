@@ -5,12 +5,29 @@ import SumInputEachExpense from "./SumInputEachExpense";
 import DeleteExpense from "./DeleteExpense";
 import PieChart from "./PieChart";
 
+import {
+  closestCorners,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import Column from "./Column";
+
 function PageMonth() {
   const { monthId } = useParams();
 
   const [value, setValue] = useState("");
   const [displayValue, setDisplayValue] = useLocalStorage("displayValue", {});
-
   const [showModalAddExpense, setShowModalAddExpense] = useState(false);
   const [valueNameExpense, setValueNameExpense] = useState("");
   const [expensesName, setExpensesName] = useState([]);
@@ -67,7 +84,7 @@ function PageMonth() {
     setValueNameExpense(e.target.value);
   }
 
-  //ADD THAT NEw EXPENSE
+  //ADD THAT NEW EXPENSE
   function addNewExpense() {
     if (valueNameExpense.trim() !== "") {
       const newExpense = { id: Date.now(), name: valueNameExpense };
@@ -87,7 +104,39 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
-  ////////////////////////////
+  // DND LOGIC
+  const getExpensePos = (id) =>
+    expensesName.findIndex((expense) => expense.id === id);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    if (active.id !== over.id) {
+      setExpensesName((expenses) => {
+        const originalPos = getExpensePos(active.id);
+        const newPos = getExpensePos(over.id);
+
+        const updatedExpenses = arrayMove(expenses, originalPos, newPos);
+
+        window.localStorage.setItem(
+          `expenses-${monthName}`,
+          JSON.stringify(updatedExpenses)
+        );
+
+        return updatedExpenses;
+      });
+    }
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   return (
     <div>
@@ -120,26 +169,35 @@ function PageMonth() {
         )}
 
         <div>
-          {expensesName.map((expense) => (
-            <div
-              key={expense.id}
-              className="flex flex-col gap-2 mb-10 border border-red-500"
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={expensesName}
+              strategy={verticalListSortingStrategy}
             >
-              <SumInputEachExpense
-                monthName={monthName}
-                expenseId={expense.id}
-                onSumChange={handleSumChange}
-              />
-              {expense.name}
-              <DeleteExpense
-                monthName={monthName}
-                expensesName={expensesName}
-                setExpensesName={setExpensesName}
-                expense={expense}
-                setOverallSum={setOverallSum}
-              />
-            </div>
-          ))}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCorners}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={expensesName}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Column
+                    tasks={expensesName}
+                    monthName={monthName}
+                    onSumChange={handleSumChange}
+                    setExpensesName={setExpensesName}
+                    setOverallSum={setOverallSum}
+                  />
+                </SortableContext>
+              </DndContext>
+            </SortableContext>
+          </DndContext>
         </div>
         <p>Overall Sum: {overallSum}</p>
       </div>

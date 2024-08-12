@@ -1,7 +1,17 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import SumInputEachExpense from "./SumInputEachExpense";
+import DeleteExpense from "./DeleteExpense";
 
-function Task({ id, title }) {
+function Task({
+  id,
+  title,
+  monthName,
+  onSumChange,
+  expensesName,
+  setExpensesName,
+  setOverallSum,
+}) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -16,9 +26,23 @@ function Task({ id, title }) {
       {...attributes}
       {...listeners}
       style={style}
-      className="bg-blue-100 flex items-center justify-center gap-8 p-2 touch-none"
+      className="bg-blue-100 flex flex-col gap-8 p-2 touch-none"
     >
-      {title}
+      <div className="flex items-center justify-between">
+        <div>{title}</div>
+        <DeleteExpense
+          monthName={monthName}
+          expensesName={expensesName}
+          setExpensesName={setExpensesName}
+          expense={{ id, name: title }}
+          setOverallSum={setOverallSum}
+        />
+      </div>
+      <SumInputEachExpense
+        monthName={monthName}
+        expenseId={id}
+        onSumChange={onSumChange}
+      />
     </div>
   );
 }
