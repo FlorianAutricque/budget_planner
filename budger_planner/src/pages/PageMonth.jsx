@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
 
-import PieChart from "./PieChart";
-import DragAndDrop from "./DragAndDrop";
+import PieChart from "../components/PieChart";
+import DragAndDrop from "../components/DragAndDrop";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -88,7 +88,6 @@ function PageMonth() {
 
   return (
     <div className="px-[1rem]">
-      <h1>{monthName}</h1>
       <PieChart monthName={monthName} expensesName={expensesName} />
 
       <div>
