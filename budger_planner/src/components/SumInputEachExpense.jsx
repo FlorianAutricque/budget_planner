@@ -23,6 +23,7 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
       localStorage.setItem(`sum-${monthName}-${expenseId}`, newSum);
       setInputValue("");
       onSumChange(newSum);
+      console.log(`New sum for ${expenseId}: ${newSum}`);
     }
   };
 
@@ -34,7 +35,9 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
         onChange={handleInputChange}
         placeholder="Enter a number"
       />
-      <button onClick={handleAddValue}>Add</button>
+      <button onClick={handleAddValue} className="bg-red-200 z-50">
+        Add
+      </button>
       <p>Sum: {sum}</p>
     </div>
   );

@@ -124,7 +124,7 @@ function PageMonth() {
             setOverallSum={setOverallSum}
           />
         </div>
-        <p>Overall Sum: {overallSum}</p>
+        <p className="mb-[5rem]">Overall Sum: {overallSum}</p>
       </div>
     </div>
   );

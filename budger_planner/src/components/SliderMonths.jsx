@@ -50,7 +50,7 @@ function SliderMonths() {
           onClick={toggleActiveClass}
         >
           {months.map((month) => (
-            <>
+            <div key={month.id}>
               <div onClick={removeActive}>
                 <NavLink
                   to={`/month/${month.id}`}
@@ -64,7 +64,7 @@ function SliderMonths() {
                   {month.nameMonth}
                 </NavLink>
               </div>
-            </>
+            </div>
           ))}
         </div>
         <p className="cursor-pointer" onClick={sliderRight}>

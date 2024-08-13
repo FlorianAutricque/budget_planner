@@ -10,3 +10,16 @@ body {
   /* padding: 1rem; */
   background-color: var(--background-color);
 }
+
+/* HiDE ARROWS INPUT */
+/* input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+
+/* For Safari (iOS) */
+/* input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+} */
