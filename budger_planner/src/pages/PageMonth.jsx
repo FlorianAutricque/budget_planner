@@ -143,17 +143,24 @@ function PageMonth() {
       </div>
 
       <div>
-        <div id="salary">
-          <input
-            id="inputSalary"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            type="number"
-            placeholder="Input your salary"
-          />
+        <div
+          id="salary"
+          className="flex flex-col items-center gap-8 rounded-3xl bg-white shadow-md mb-8 p-4"
+        >
+          <div id="inputSalary" className="flex gap-8">
+            <input
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              type="number"
+              placeholder="Input your salary"
+              className="bg-[var(--background-color)] border rounded-lg pl-2"
+            />
 
-          <button onClick={handleClick}>Add</button>
-          <span className="flex items-center gap-2">
+            <button onClick={handleClick} className="btn">
+              Add
+            </button>
+          </div>
+          <span className="flex items-center justify-center gap-2">
             <p>Salary: {displayValue[monthName] || 0}</p>
             <p onClick={toggleInputSalary} className="cursor-pointer">
               <FaRegEdit />
@@ -193,7 +200,7 @@ function PageMonth() {
           {expensesName.map((expense) => (
             <div
               key={expense.id}
-              className="flex flex-col items-center gap-2 mb-10 rounded-3xl bg-white shadow-md"
+              className="flex flex-col items-center gap-2 mb-10 rounded-3xl bg-white shadow-md p-4"
             >
               <p className="text-xl text-center">{expense.name}</p>
               <SumInputEachExpense

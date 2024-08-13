@@ -4,11 +4,21 @@
 
 :root {
   --background-color: #fafafa;
+  --slider-color-top: #9b3bf5;
+  --slider-color-bottom: #6744ea;
 }
 
 body {
   /* padding: 1rem; */
   background-color: var(--background-color);
+}
+
+.sliderMonth {
+  background: linear-gradient(
+    to bottom,
+    var(--slider-color-top),
+    var(--slider-color-bottom)
+  );
 }
 
 .btn {

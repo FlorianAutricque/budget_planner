@@ -39,10 +39,10 @@ function SliderMonths() {
   }
 
   return (
-    <div className="bg-red-100 pt-[2rem]">
-      <div className="flex items-center gap-2 pb-2">
+    <div className="sliderMonth pt-[2rem]">
+      <div className="flex items-center gap-2">
         <p className="cursor-pointer" onClick={sliderLeft}>
-          <FaArrowLeft />
+          <FaArrowLeft color="white" />
         </p>
         <div
           id="slider"
@@ -57,8 +57,8 @@ function SliderMonths() {
                   key={month.id}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-white border-b border-white z-20 font-bold"
-                      : ""
+                      ? "text-white border-white border-b-4 z-20 font-bold block h-[2rem]"
+                      : "text-[#b3b2b2]"
                   }
                 >
                   {month.nameMonth}
@@ -68,7 +68,7 @@ function SliderMonths() {
           ))}
         </div>
         <p className="cursor-pointer" onClick={sliderRight}>
-          <FaArrowRight />
+          <FaArrowRight color="white" />
         </p>
       </div>
     </div>
