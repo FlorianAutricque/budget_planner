@@ -11,6 +11,34 @@ body {
   background-color: var(--background-color);
 }
 
+.btn {
+  border-radius: 10px;
+  background-color: #3f6eee;
+  color: white;
+  width: 5rem;
+}
+
+.modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.blur {
+  filter: blur(4px);
+}
+
 /* HiDE ARROWS INPUT */
 /* input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

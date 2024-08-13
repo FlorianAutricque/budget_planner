@@ -4,6 +4,7 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
   const [inputValue, setInputValue] = useState("");
   const [sum, setSum] = useState(0);
 
+  // Fetch stored sum from localStorage when monthName or expenseId changes
   useEffect(() => {
     const storedSum = localStorage.getItem(`sum-${monthName}-${expenseId}`);
     if (storedSum) {
@@ -35,7 +36,7 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
         onChange={handleInputChange}
         placeholder="Enter a number"
       />
-      <button onClick={handleAddValue} className="bg-red-200 z-50">
+      <button onClick={handleAddValue} className="btn">
         Add
       </button>
       <p>Sum: {sum}</p>

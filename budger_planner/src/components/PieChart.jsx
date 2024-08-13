@@ -40,7 +40,7 @@ function PieChart({ monthName, expensesName }) {
     };
   };
   return (
-    <div className="bg-[#ffffff] rounded-3xl shadow-md">
+    <div className="bg-[#ffffff] rounded-3xl shadow-md mt-8 mb-8">
       <ReactEcharts option={getOption()} />
     </div>
   );
