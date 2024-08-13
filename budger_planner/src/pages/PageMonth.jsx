@@ -117,7 +117,7 @@ function PageMonth() {
           </div>
         )}
 
-        {/* {expensesName.map((expense) => (
+        {expensesName.map((expense) => (
           <div
             key={expense.id}
             className="flex flex-col gap-2 mb-10 border border-red-500"
@@ -136,9 +136,9 @@ function PageMonth() {
               setOverallSum={setOverallSum}
             />
           </div>
-        ))} */}
+        ))}
 
-        <div>
+        {/* <div>
           <DragAndDrop
             expensesName={expensesName}
             setExpensesName={setExpensesName}
@@ -146,7 +146,7 @@ function PageMonth() {
             handleSumChange={handleSumChange}
             setOverallSum={setOverallSum}
           />
-        </div>
+        </div> */}
         <p className="mb-[5rem]">Overall Sum: {overallSum}</p>
       </div>
     </div>
