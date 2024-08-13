@@ -10,10 +10,8 @@ import {
 import {
   SortableContext,
   verticalListSortingStrategy,
-  useSortable,
+  arrayMove,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import Column from "./Column";
 
 function DragAndDrop({
@@ -51,43 +49,28 @@ function DragAndDrop({
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    useSensor(KeyboardSensor)
   );
+
   return (
-    <div>
-      {" "}
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragEnd={handleDragEnd}
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCorners}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={expensesName.map((expense) => expense.id)}
+        strategy={verticalListSortingStrategy}
       >
-        <SortableContext
-          items={expensesName}
-          strategy={verticalListSortingStrategy}
-        >
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={expensesName}
-              strategy={verticalListSortingStrategy}
-            >
-              <Column
-                tasks={expensesName}
-                monthName={monthName}
-                onSumChange={handleSumChange}
-                setExpensesName={setExpensesName}
-                setOverallSum={setOverallSum}
-              />
-            </SortableContext>
-          </DndContext>
-        </SortableContext>
-      </DndContext>
-    </div>
+        <Column
+          tasks={expensesName}
+          monthName={monthName}
+          onSumChange={handleSumChange}
+          setExpensesName={setExpensesName}
+          setOverallSum={setOverallSum}
+        />
+      </SortableContext>
+    </DndContext>
   );
 }
 

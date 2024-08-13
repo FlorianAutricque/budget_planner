@@ -13,7 +13,10 @@ function Column({
 }) {
   return (
     <div className="bg-red-200 flex flex-col gap-2 p-4">
-      <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={tasks.map((task) => task.id)}
+        strategy={verticalListSortingStrategy}
+      >
         {tasks.map((expense) => (
           <Task
             key={expense.id}

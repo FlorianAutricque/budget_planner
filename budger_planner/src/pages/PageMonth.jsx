@@ -4,6 +4,8 @@ import useLocalStorage from "../utils/LocalStorage";
 
 import PieChart from "../components/PieChart";
 import DragAndDrop from "../components/DragAndDrop";
+import SumInputEachExpense from "../components/SumInputEachExpense";
+import DeleteExpense from "../components/DeleteExpense";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -114,6 +116,27 @@ function PageMonth() {
             <button onClick={addNewExpense}>ADD New Expense</button>
           </div>
         )}
+
+        {/* {expensesName.map((expense) => (
+          <div
+            key={expense.id}
+            className="flex flex-col gap-2 mb-10 border border-red-500"
+          >
+            <SumInputEachExpense
+              monthName={monthName}
+              expenseId={expense.id}
+              onSumChange={handleSumChange}
+            />
+            {expense.name}
+            <DeleteExpense
+              monthName={monthName}
+              expensesName={expensesName}
+              setExpensesName={setExpensesName}
+              expense={expense}
+              setOverallSum={setOverallSum}
+            />
+          </div>
+        ))} */}
 
         <div>
           <DragAndDrop
