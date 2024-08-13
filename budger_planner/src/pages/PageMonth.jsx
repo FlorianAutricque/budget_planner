@@ -9,6 +9,7 @@ import DeleteExpense from "../components/DeleteExpense";
 
 import { IoIosAddCircle } from "react-icons/io";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { FaRegEdit } from "react-icons/fa";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -24,6 +25,7 @@ function PageMonth() {
   const salary = document.getElementById("salary");
   const sum = document.getElementById("sum");
   const expenses = document.getElementById("expenses");
+  const inputSalary = document.getElementById("inputSalary");
 
   const monthNames = {
     1: "January",
@@ -44,7 +46,7 @@ function PageMonth() {
 
   //LOCALSTORAGE
   useEffect(() => {
-    setValue(displayValue[monthName] || 0);
+    setValue(displayValue[monthName] || "");
 
     const storedExpenses =
       JSON.parse(window.localStorage.getItem(`expenses-${monthName}`)) || [];
@@ -64,6 +66,7 @@ function PageMonth() {
       ...prev,
       [monthName]: value,
     }));
+    toggleInputSalary();
   }
 
   //SHOW MODAL TO ADD AN EXPENSE
@@ -128,6 +131,11 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
+  //TOGGLE INPUT SALARY
+  const toggleInputSalary = () => {
+    inputSalary.classList.toggle("inputSalary");
+  };
+
   return (
     <div className="px-[1rem]">
       <div id="pie">
@@ -137,14 +145,20 @@ function PageMonth() {
       <div>
         <div id="salary">
           <input
+            id="inputSalary"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="border"
             type="number"
             placeholder="Input your salary"
           />
+
           <button onClick={handleClick}>Add</button>
-          <p>Salary: {displayValue[monthName] || 0}</p>
+          <span className="flex items-center gap-2">
+            <p>Salary: {displayValue[monthName] || 0}</p>
+            <p onClick={toggleInputSalary} className="cursor-pointer">
+              <FaRegEdit />
+            </p>
+          </span>
         </div>
 
         <button
@@ -179,14 +193,14 @@ function PageMonth() {
           {expensesName.map((expense) => (
             <div
               key={expense.id}
-              className="flex flex-col gap-2 mb-10 border border-red-500"
+              className="flex flex-col items-center gap-2 mb-10 rounded-3xl bg-white shadow-md"
             >
+              <p className="text-xl text-center">{expense.name}</p>
               <SumInputEachExpense
                 monthName={monthName}
                 expenseId={expense.id}
                 onSumChange={handleSumChange}
               />
-              {expense.name}
               <DeleteExpense
                 monthName={monthName}
                 expensesName={expensesName}
