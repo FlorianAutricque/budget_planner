@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
   const [inputValue, setInputValue] = useState("");
   const [sum, setSum] = useState(0);
+  const previousSumRef = useRef(0);
 
-  // Fetch stored sum from localStorage when monthName or expenseId changes
   useEffect(() => {
     const storedSum = localStorage.getItem(`sum-${monthName}-${expenseId}`);
     if (storedSum) {
-      setSum(parseFloat(storedSum));
+      const parsedSum = parseFloat(storedSum);
+      setSum(parsedSum);
+      previousSumRef.current = parsedSum;
     }
   }, [monthName, expenseId]);
 
@@ -20,25 +22,30 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
     const numericValue = parseFloat(inputValue);
     if (!isNaN(numericValue)) {
       const newSum = sum + numericValue;
+      const difference = newSum - previousSumRef.current;
       setSum(newSum);
       localStorage.setItem(`sum-${monthName}-${expenseId}`, newSum);
       setInputValue("");
-      onSumChange(newSum);
+      onSumChange(difference);
+      previousSumRef.current = newSum;
       console.log(`New sum for ${expenseId}: ${newSum}`);
     }
   };
 
   return (
     <div>
-      <input
-        type="number"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder="Enter a number"
-      />
-      <button onClick={handleAddValue} className="btn">
-        Add
-      </button>
+      <div className="flex gap-2">
+        <input
+          type="number"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder={sum === 0 ? "Enter a value" : "Add a new value"}
+          className="bg-[var(--background-color)] border rounded-lg pl-2"
+        />
+        <button onClick={handleAddValue} className="btn">
+          Add
+        </button>
+      </div>
       <p>Sum: {sum}</p>
     </div>
   );

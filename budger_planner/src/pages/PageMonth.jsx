@@ -143,10 +143,12 @@ function PageMonth() {
 
   return (
     <div className="px-[1rem]">
+      {/* PIE */}
       <div id="pie">
         <PieChart monthName={monthName} expensesName={expensesName} />
       </div>
 
+      {/* SALARY */}
       <div>
         <div
           id="salary"
@@ -172,6 +174,16 @@ function PageMonth() {
             </p>
           </span>
         </div>
+
+        {/* SUM */}
+        <p
+          id="sum"
+          className="text-center rounded-3xl bg-white shadow-md mb-8 p-4"
+        >
+          Total: {overallSum}
+        </p>
+
+        {/* MODAL ADD NEW EXPENSE */}
 
         <button
           onClick={handleShowModalAddExpense}
@@ -201,7 +213,9 @@ function PageMonth() {
           </div>
         )}
 
-        <div id="expenses">
+        {/* LIST ALL EXPENSES */}
+
+        <div id="expenses" className="mb-[5rem]">
           {expensesName.map((expense) => (
             <div
               key={expense.id}
@@ -235,9 +249,6 @@ function PageMonth() {
             setOverallSum={setOverallSum}
           />
         </div> */}
-        <p id="sum" className="mb-[5rem]">
-          Overall Sum: {overallSum}
-        </p>
       </div>
     </div>
   );
