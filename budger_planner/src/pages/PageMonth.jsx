@@ -20,12 +20,15 @@ function PageMonth() {
   const [valueNameExpense, setValueNameExpense] = useState("");
   const [expensesName, setExpensesName] = useState([]);
   const [overallSum, setOverallSum] = useState(0);
+  const [salary, setSalary] = useState(0);
+  const [moneySavedOrLoss, setMoneySavedOrLoss] = useState(0);
 
-  const pie = document.getElementById("pie");
-  const salary = document.getElementById("salary");
-  const sum = document.getElementById("sum");
-  const expenses = document.getElementById("expenses");
-  const inputSalary = document.getElementById("inputSalary");
+  const pie = useRef(null);
+  const salaryRef = useRef(null);
+  const salaryRefInput = useRef(null);
+  const sum = useRef(null);
+  const expenses = useRef(null);
+  const money = useRef(null);
 
   const monthNames = {
     1: "January",
@@ -44,9 +47,10 @@ function PageMonth() {
 
   const monthName = monthNames[monthId] || "Unknown Month";
 
-  //LOCALSTORAGE
+  // LOCALSTORAGE
   useEffect(() => {
     setValue(displayValue[monthName] || "");
+    setSalary(displayValue[monthName] || 0);
 
     const storedExpenses =
       JSON.parse(window.localStorage.getItem(`expenses-${monthName}`)) || [];
@@ -61,6 +65,12 @@ function PageMonth() {
     setOverallSum(initialOverallSum);
   }, [monthName, displayValue]);
 
+  //CALCUL SAVED OR LOSS
+  useEffect(() => {
+    setMoneySavedOrLoss(salary - overallSum);
+  }, [overallSum, salary]);
+
+  //HANDLE DISPLAY VALUE
   function handleClick() {
     setDisplayValue((prev) => ({
       ...prev,
@@ -69,27 +79,29 @@ function PageMonth() {
     toggleInputSalary();
   }
 
-  //SHOW MODAL TO ADD AN EXPENSE
+  //SHOW MODAL
   function handleShowModalAddExpense() {
     setShowModalAddExpense(!showModalAddExpense);
 
-    pie.classList.toggle("blur");
-    salary.classList.toggle("blur");
-    sum.classList.toggle("blur");
-    expenses.classList.toggle("blur");
+    if (pie.current) pie.current.classList.toggle("blur");
+    if (salaryRef.current) salaryRef.current.classList.toggle("blur");
+    if (sum.current) sum.current.classList.toggle("blur");
+    if (expenses.current) expenses.current.classList.toggle("blur");
+    if (money.current) money.current.classList.toggle("blur");
   }
 
-  //HANDLE CLICK OUTSIDE MODAL
   const modalRef = useRef(null);
 
+  //CLOSE MODAL CLICK OUTSIDE
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         setShowModalAddExpense(false);
-        if (pie) pie.classList.remove("blur");
-        if (salary) salary.classList.remove("blur");
-        if (sum) sum.classList.remove("blur");
-        if (expenses) expenses.classList.remove("blur");
+        if (pie.current) pie.current.classList.remove("blur");
+        if (salaryRef.current) salaryRef.current.classList.remove("blur");
+        if (sum.current) sum.current.classList.remove("blur");
+        if (expenses.current) expenses.current.classList.remove("blur");
+        if (money.current) money.current.classList.remove("blur");
       }
     }
 
@@ -98,19 +110,18 @@ function PageMonth() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [pie, salary, sum, expenses]);
+  }, []);
 
   //CAPITALIZE FIRST LETTER
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  //ADD A NAME TO THAT EXPENSE
   function addNameOfExpense(e) {
     setValueNameExpense(e.target.value);
   }
 
-  //ADD THAT NEW EXPENSE
+  //ADDING NEW EXPENSE
   function addNewExpense() {
     if (valueNameExpense.trim() !== "") {
       const newExpense = { id: Date.now(), name: valueNameExpense };
@@ -125,36 +136,34 @@ function PageMonth() {
     }
     setShowModalAddExpense(!showModalAddExpense);
 
-    if (pie) pie.classList.remove("blur");
-    if (salary) salary.classList.remove("blur");
-    if (sum) sum.classList.remove("blur");
-    if (expenses) expenses.classList.remove("blur");
+    if (pie.current) pie.current.classList.remove("blur");
+    if (salaryRef.current) salaryRef.current.classList.remove("blur");
+    if (sum.current) sum.current.classList.remove("blur");
+    if (expenses.current) expenses.current.classList.remove("blur");
+    if (money.current) money.current.classList.remove("blur");
   }
 
-  //CALCUL SUM CHANGES
   function handleSumChange(expenseSum) {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
-  //TOGGLE INPUT SALARY
   const toggleInputSalary = () => {
-    inputSalary.classList.toggle("inputSalary");
+    if (salaryRefInput.current)
+      salaryRefInput.current.classList.toggle("inputSalary");
   };
 
   return (
     <div className="px-[1rem]">
-      {/* PIE */}
-      <div id="pie">
+      <div ref={pie}>
         <PieChart monthName={monthName} expensesName={expensesName} />
       </div>
 
-      {/* SALARY */}
       <div>
         <div
-          id="salary"
+          ref={salaryRef}
           className="flex flex-col items-center gap-8 rounded-3xl bg-white shadow-md mb-8 p-4"
         >
-          <div id="inputSalary" className="flex gap-8">
+          <div ref={salaryRefInput} className="flex gap-8">
             <input
               value={value}
               onChange={(e) => setValue(e.target.value)}
@@ -175,15 +184,16 @@ function PageMonth() {
           </span>
         </div>
 
-        {/* SUM */}
-        <p
-          id="sum"
-          className="text-center rounded-3xl bg-white shadow-md mb-8 p-4"
+        <div
+          ref={sum}
+          className="flex flex-col text-center rounded-3xl bg-white shadow-md mb-8 p-4"
         >
-          Total: {overallSum}
-        </p>
-
-        {/* MODAL ADD NEW EXPENSE */}
+          <p>Total expenses: {overallSum}</p>
+          <p>
+            {moneySavedOrLoss < 0 ? "Loss: " : "Saved: "}
+            {moneySavedOrLoss}
+          </p>
+        </div>
 
         <button
           onClick={handleShowModalAddExpense}
@@ -213,9 +223,7 @@ function PageMonth() {
           </div>
         )}
 
-        {/* LIST ALL EXPENSES */}
-
-        <div id="expenses" className="mb-[5rem]">
+        <div ref={expenses} className="mb-[5rem]">
           {expensesName.map((expense) => (
             <div
               key={expense.id}
@@ -238,9 +246,7 @@ function PageMonth() {
               />
             </div>
           ))}
-        </div>
-
-        {/* <div>
+          {/* <div>
           <DragAndDrop
             expensesName={expensesName}
             setExpensesName={setExpensesName}
@@ -249,6 +255,7 @@ function PageMonth() {
             setOverallSum={setOverallSum}
           />
         </div> */}
+        </div>
       </div>
     </div>
   );
