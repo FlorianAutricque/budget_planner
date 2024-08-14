@@ -16,7 +16,7 @@ function Navbar({ month }) {
       onClick={toggleActiveClass}
     >
       <NavLink
-        className={({ isActive }) => (isActive ? "text-red-300" : "")}
+        className={({ isActive }) => (isActive ? "text-[var(--btn-blue)]" : "")}
         to="/"
       >
         <span className="flex flex-col items-center ">
@@ -25,7 +25,7 @@ function Navbar({ month }) {
       </NavLink>
 
       <NavLink
-        className={({ isActive }) => (isActive ? "text-red-300" : "")}
+        className={({ isActive }) => (isActive ? "text-[var(--btn-blue)]" : "")}
         to={`/month/${month.id}`}
       >
         <span className="flex flex-col items-center ">

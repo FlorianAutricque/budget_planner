@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 
 function App() {
   const months = [
-    { id: 1, nameMonth: "Januray" },
+    { id: 1, nameMonth: "January" },
     { id: 2, nameMonth: "February" },
     { id: 3, nameMonth: "March" },
     { id: 4, nameMonth: "April" },
@@ -22,15 +22,34 @@ function App() {
   ];
 
   const day = new Date();
-  const currentMonthIndex = day.getMonth();
+  const currentMonthIndex = day.getMonth(); // 0-based index for months
   const month = months[currentMonthIndex];
+
+  // Handle previous month logic
+  const previousMonth =
+    currentMonthIndex === 0
+      ? months[11] // December
+      : months[currentMonthIndex - 1];
+  const previousMonthName = previousMonth.nameMonth;
+
   const name = month ? month.nameMonth : "Unknown Month";
+
   return (
     <>
       <BrowserRouter>
         <SliderMonths />
         <Routes>
-          <Route index element={<Homepage name={name} month={month} />} />
+          <Route
+            index
+            element={
+              <Homepage
+                name={name}
+                month={month}
+                previousMonth={previousMonth}
+                previousMonthName={previousMonthName}
+              />
+            }
+          />
           <Route path="month/:monthId" element={<PageMonth />} />
         </Routes>
         <Navbar month={month} />

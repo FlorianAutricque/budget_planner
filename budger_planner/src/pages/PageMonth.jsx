@@ -10,6 +10,10 @@ import DeleteExpense from "../components/DeleteExpense";
 import { IoIosAddCircle } from "react-icons/io";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
+import { GiReceiveMoney } from "react-icons/gi";
+import { GiPayMoney } from "react-icons/gi";
+import { GiTakeMyMoney } from "react-icons/gi";
+import { GiMoneyStack } from "react-icons/gi";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -22,6 +26,7 @@ function PageMonth() {
   const [overallSum, setOverallSum] = useState(0);
   const [salary, setSalary] = useState(0);
   const [moneySavedOrLoss, setMoneySavedOrLoss] = useState(0);
+  const [isInputVisible, setIsInputVisible] = useState(false);
 
   const pie = useRef(null);
   const salaryRef = useRef(null);
@@ -147,10 +152,27 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
+  useEffect(() => {
+    const storedVisibility = localStorage.getItem("inputSalaryVisible");
+    setIsInputVisible(storedVisibility === "true");
+  }, []);
+
   const toggleInputSalary = () => {
-    if (salaryRefInput.current)
-      salaryRefInput.current.classList.toggle("inputSalary");
+    setIsInputVisible((prevVisibility) => {
+      const newVisibility = !prevVisibility;
+      localStorage.setItem("inputSalaryVisible", newVisibility.toString());
+      return newVisibility;
+    });
   };
+
+  useEffect(() => {
+    const savings = salary - overallSum;
+    setMoneySavedOrLoss(savings);
+
+    localStorage.setItem(`savings-${monthName}`, savings);
+  }, [overallSum, salary]);
+
+  ////
 
   return (
     <div className="px-[1rem]">
@@ -161,38 +183,71 @@ function PageMonth() {
       <div>
         <div
           ref={salaryRef}
-          className="flex flex-col items-center gap-8 rounded-3xl bg-white shadow-md mb-8 p-4"
+          className="flex items-center gap-4 rounded-3xl bg-white shadow-md mb-8 p-4"
         >
-          <div ref={salaryRefInput} className="flex gap-8">
-            <input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              type="number"
-              placeholder="Input your salary"
-              className="bg-[var(--background-color)] border rounded-lg pl-2"
-            />
-
-            <button onClick={handleClick} className="btn">
-              Add
-            </button>
+          <div>
+            <GiTakeMyMoney size={50} color="#27B7EE" />
           </div>
-          <span className="flex items-center justify-center gap-2">
-            <p>Salary: {displayValue[monthName] || 0}</p>
-            <p onClick={toggleInputSalary} className="cursor-pointer">
-              <FaRegEdit />
-            </p>
-          </span>
+          <div className="flex flex-col gap-4 w-full">
+            <div
+              ref={salaryRefInput}
+              className={`flex justify-between gap-4 ${
+                isInputVisible ? "block" : "hidden"
+              }`}
+            >
+              <input
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                type="number"
+                placeholder="Your salary"
+                className="bg-[var(--background-color)] border rounded-lg pl-2 w-full"
+              />
+
+              <button onClick={handleClick} className="btn">
+                Add
+              </button>
+            </div>
+
+            <div className="flex gap-2 justify-between">
+              <p className="flex items-center">Salary:</p>
+
+              <p>
+                <strong>
+                  €
+                  {Number(displayValue[monthName] || 0).toLocaleString("de-DE")}
+                </strong>
+              </p>
+              <button
+                onClick={toggleInputSalary}
+                className="cursor-pointer p-0 m-0 border-none bg-transparent flex justify-end"
+              >
+                <FaRegEdit size={20} />
+              </button>
+            </div>
+          </div>
         </div>
 
         <div
           ref={sum}
-          className="flex flex-col text-center rounded-3xl bg-white shadow-md mb-8 p-4"
+          className="flex justify-between text-center rounded-3xl bg-white shadow-md mb-8 p-4 gap-4"
         >
-          <p>Total expenses: {overallSum}</p>
-          <p>
-            {moneySavedOrLoss < 0 ? "Loss: " : "Saved: "}
-            {moneySavedOrLoss}
-          </p>
+          <div>
+            {moneySavedOrLoss < 0 ? (
+              <GiPayMoney size={50} color="#F55D76" />
+            ) : (
+              <GiReceiveMoney size={50} color="#27B7EE" />
+            )}
+          </div>
+          <div className="flex w-full justify-between">
+            <div className="text-left">
+              <p>Total expenses: </p>
+              <p>{moneySavedOrLoss < 0 ? "Loss: " : "Saved: "}</p>
+            </div>
+            <div className="flex flex-col">
+              <strong>€{overallSum.toLocaleString("de-DE")}</strong>
+              <strong>€{moneySavedOrLoss.toLocaleString("de-DE")}</strong>
+            </div>
+          </div>
         </div>
 
         <button
@@ -227,23 +282,35 @@ function PageMonth() {
           {expensesName.map((expense) => (
             <div
               key={expense.id}
-              className="flex flex-col items-center gap-2 mb-10 rounded-3xl bg-white shadow-md p-4"
+              className="flex flex-col items-center gap-4 mb-10 rounded-3xl bg-white shadow-md p-4"
             >
-              <p className="text-xl text-center">
-                {capitalizeFirstLetter(expense.name)}
-              </p>
-              <SumInputEachExpense
-                monthName={monthName}
-                expenseId={expense.id}
-                onSumChange={handleSumChange}
-              />
-              <DeleteExpense
-                monthName={monthName}
-                expensesName={expensesName}
-                setExpensesName={setExpensesName}
-                expense={expense}
-                setOverallSum={setOverallSum}
-              />
+              <div className="flex justify-between w-full">
+                <strong className="text-xl">
+                  {capitalizeFirstLetter(expense.name)}
+                </strong>
+                <div>
+                  <DeleteExpense
+                    monthName={monthName}
+                    expensesName={expensesName}
+                    setExpensesName={setExpensesName}
+                    expense={expense}
+                    setOverallSum={setOverallSum}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-4 w-full">
+                <div>
+                  <GiMoneyStack size={50} color="green" />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <SumInputEachExpense
+                    monthName={monthName}
+                    expenseId={expense.id}
+                    onSumChange={handleSumChange}
+                  />
+                </div>
+              </div>
             </div>
           ))}
           {/* <div>

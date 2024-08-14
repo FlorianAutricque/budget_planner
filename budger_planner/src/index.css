@@ -6,6 +6,8 @@
   --background-color: #fafafa;
   --slider-color-top: #9b3bf5;
   --slider-color-bottom: #6744ea;
+
+  --btn-blue: #3f6eee;
 }
 
 body {
@@ -23,7 +25,7 @@ body {
 
 .btn {
   border-radius: 10px;
-  background-color: #3f6eee;
+  background-color: var(--btn-blue);
   color: white;
   width: 5rem;
 }

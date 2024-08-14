@@ -39,8 +39,13 @@ function SliderMonths() {
     slider.scrollLeft = slider.scrollLeft + 200;
   }
 
+  const currentMonthIndex = new Date().getMonth();
+  // const previousMonthIndex =
+  //   currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
+
+  // const previousMonthName = months[previousMonthIndex].nameMonth;
+
   useEffect(() => {
-    const currentMonthIndex = new Date().getMonth();
     const slider = sliderRef.current;
 
     if (slider) {
@@ -56,10 +61,11 @@ function SliderMonths() {
       const currentMonthText = monthElement.querySelector("p");
       if (currentMonthText) {
         currentMonthText.style.color = "white";
-        currentMonthText.style.fontWeight = "bold";
       }
     }
-  }, []);
+  }, [currentMonthIndex]);
+
+  // console.log(previousMonthName);
 
   return (
     <div className="sliderMonth pt-[2rem]">

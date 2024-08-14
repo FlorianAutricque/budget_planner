@@ -28,12 +28,11 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
       setInputValue("");
       onSumChange(difference);
       previousSumRef.current = newSum;
-      console.log(`New sum for ${expenseId}: ${newSum}`);
     }
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <input
           type="number"
@@ -46,7 +45,12 @@ function SumInputEachExpense({ monthName, expenseId, onSumChange }) {
           Add
         </button>
       </div>
-      <p>Sum: {sum}</p>
+      <div className="flex justify-between">
+        <p>Total: </p>
+        <p>
+          <strong>€{sum.toLocaleString("de-DE")}</strong>
+        </p>
+      </div>
     </div>
   );
 }

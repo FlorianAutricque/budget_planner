@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { TiDeleteOutline } from "react-icons/ti";
 
 function DeleteExpense({
   monthName,
@@ -10,7 +11,7 @@ function DeleteExpense({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteExpense = (expenseId) => {
-    if (isDeleting) return; // Prevent multiple clicks
+    if (isDeleting) return;
     setIsDeleting(true);
 
     console.log("Deleting expense with ID:", expenseId);
@@ -22,7 +23,6 @@ function DeleteExpense({
     const updatedExpenses = expensesName.filter((exp) => exp.id !== expenseId);
     console.log("Updated expenses:", updatedExpenses);
 
-    // Update state and local storage
     setExpensesName(updatedExpenses);
     setOverallSum((prevOverallSum) => prevOverallSum - deletedExpenseSum);
     if (updatedExpenses.length === 0) {
@@ -34,16 +34,15 @@ function DeleteExpense({
     );
     localStorage.removeItem(`sum-${monthName}-${expenseId}`);
 
-    setIsDeleting(false); // Allow further clicks after processing
+    setIsDeleting(false);
   };
 
   return (
     <button
       onClick={() => handleDeleteExpense(expense.id)}
       disabled={isDeleting}
-      className="btn"
     >
-      {isDeleting ? "Deleting..." : "Delete"}
+      <TiDeleteOutline color="red" size={30} />
     </button>
   );
 }
