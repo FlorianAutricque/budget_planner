@@ -100,6 +100,11 @@ function PageMonth() {
     };
   }, [pie, salary, sum, expenses]);
 
+  //CAPITALIZE FIRST LETTER
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   //ADD A NAME TO THAT EXPENSE
   function addNameOfExpense(e) {
     setValueNameExpense(e.target.value);
@@ -202,7 +207,9 @@ function PageMonth() {
               key={expense.id}
               className="flex flex-col items-center gap-2 mb-10 rounded-3xl bg-white shadow-md p-4"
             >
-              <p className="text-xl text-center">{expense.name}</p>
+              <p className="text-xl text-center">
+                {capitalizeFirstLetter(expense.name)}
+              </p>
               <SumInputEachExpense
                 monthName={monthName}
                 expenseId={expense.id}

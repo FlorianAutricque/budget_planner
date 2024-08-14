@@ -12,13 +12,15 @@ function PieChart({ monthName, expensesName }) {
       },
       legend: {
         orient: "vertical",
-        left: "right",
+        left: "",
+        top: "center",
       },
       series: [
         {
           name: expensesName.length === 0 ? "" : "Expense Categories",
           type: "pie",
           radius: ["40%", "70%"],
+          center: ["65%", "50%"],
           itemStyle: {
             borderRadius: 10,
             borderColor: "#fff",
