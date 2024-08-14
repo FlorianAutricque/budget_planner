@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function SliderMonths() {
   const months = [
-    { id: 1, nameMonth: "Januray" },
+    { id: 1, nameMonth: "January" },
     { id: 2, nameMonth: "February" },
     { id: 3, nameMonth: "March" },
     { id: 4, nameMonth: "April" },
@@ -19,6 +19,7 @@ function SliderMonths() {
   ];
 
   const [isActive, setIsActive] = useState(false);
+  const sliderRef = useRef(null);
 
   const toggleActiveClass = () => {
     setIsActive(!isActive);
@@ -29,14 +30,36 @@ function SliderMonths() {
   };
 
   function sliderLeft() {
-    const slider = document.getElementById("slider");
+    const slider = sliderRef.current;
     slider.scrollLeft = slider.scrollLeft - 200;
   }
 
   function sliderRight() {
-    const slider = document.getElementById("slider");
+    const slider = sliderRef.current;
     slider.scrollLeft = slider.scrollLeft + 200;
   }
+
+  useEffect(() => {
+    const currentMonthIndex = new Date().getMonth();
+    const slider = sliderRef.current;
+
+    if (slider) {
+      const monthElement = slider.children[currentMonthIndex];
+      const sliderWidth = slider.offsetWidth;
+      const elementWidth = monthElement.offsetWidth;
+      const elementLeftPosition = monthElement.offsetLeft;
+
+      const scrollPosition =
+        elementLeftPosition - sliderWidth / 2 + elementWidth / 2;
+
+      slider.scrollLeft = scrollPosition;
+      const currentMonthText = monthElement.querySelector("p");
+      if (currentMonthText) {
+        currentMonthText.style.color = "white";
+        currentMonthText.style.fontWeight = "bold";
+      }
+    }
+  }, []);
 
   return (
     <div className="sliderMonth pt-[2rem]">
@@ -46,6 +69,7 @@ function SliderMonths() {
         </p>
         <div
           id="slider"
+          ref={sliderRef}
           className="hide-scrollbar flex gap-8 overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
           onClick={toggleActiveClass}
         >
@@ -61,7 +85,7 @@ function SliderMonths() {
                       : "text-[#b3b2b2]"
                   }
                 >
-                  {month.nameMonth}
+                  <p>{month.nameMonth}</p>
                 </NavLink>
               </div>
             </div>

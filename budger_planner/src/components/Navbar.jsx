@@ -2,17 +2,12 @@ import { GoHome } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { VscPieChart } from "react-icons/vsc";
 import { useState } from "react";
-import { color } from "echarts";
 
 function Navbar({ month }) {
   const [isActive, setIsActive] = useState(false);
 
   const toggleActiveClass = () => {
     setIsActive(!isActive);
-  };
-
-  const removeActive = () => {
-    setIsActive(false);
   };
 
   return (
