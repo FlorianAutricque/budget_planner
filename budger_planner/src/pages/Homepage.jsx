@@ -33,9 +33,18 @@ function Homepage({ month, name }) {
       ) || 0
     : 0;
 
+  const previousMonthSpending = previousMonthEarnings - previousMonthSavings;
+
   return (
     <div className="px-[1rem] flex flex-col items-center gap-8">
-      <h2 className="mt-10">{t("hello")}</h2>
+      <p className="title mt-10 text-3xl">PLUTUS</p>
+
+      <h1>
+        Plan For&nbsp;
+        <span className="underlined underline-clip">Sucess</span>&nbsp;& Track
+        Your&nbsp;
+        <span className="underlined underline-mask">Expenses</span>
+      </h1>
 
       <p>
         We are in <strong>{name}</strong>, let&apos;s track our budget
@@ -64,11 +73,17 @@ function Homepage({ month, name }) {
               <p className="text-white">Earned</p>
               <p>€{previousMonthEarnings.toLocaleString("de-DE")}</p>
             </div>
-            <div className="flex justify-around w-[80%] rounded-xl bg-[#F55D76]">
+
+            <div className="flex justify-around w-[80%] rounded-xl bg-[#47cd3b]">
               <p className="text-white">
                 {previousMonthSavings >= 0 ? "Saved" : "Loss"}
               </p>
               <p>€{previousMonthSavings.toLocaleString("de-DE")}</p>
+            </div>
+
+            <div className="flex justify-around w-[80%] rounded-xl bg-[#F55D76]">
+              <p className="text-white">Spent</p>
+              <p>€{previousMonthSpending.toLocaleString("de-DE")}</p>
             </div>
           </div>
         </div>

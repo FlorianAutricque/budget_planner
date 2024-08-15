@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playwrite+BE+VLG:wght@100..400&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Matemasie&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playwrite+BE+VLG:wght@100..400&display=swap");
+
 :root {
   --background-color: #fafafa;
   --slider-color-top: #9b3bf5;
@@ -15,6 +19,9 @@
 body {
   /* padding: 1rem; */
   background-color: var(--background-color);
+  /* font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal; */
 }
 
 .sliderMonth {
@@ -23,6 +30,68 @@ body {
     var(--slider-color-top),
     var(--slider-color-bottom)
   );
+}
+
+.title {
+  background-image: linear-gradient(to left, #553c9a, #b393d3);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-family: "Matemasie", sans-serif !important;
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1 {
+  /* font-size: clamp(3rem, 15vmin, 8rem); */
+  font-family: sans-serif;
+  color: hsl(0, 0%, 3%);
+}
+
+.underlined {
+  /*   background: red; */
+  position: relative;
+}
+
+.underline-mask:after {
+  content: "";
+  position: absolute;
+  top: 95%;
+  width: 150%;
+  aspect-ratio: 3 / 1;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border-radius: 50%;
+  border: 2px solid hsl(280 80% 50%);
+  /* Use a conic gradient mask to hide and show the bits you want */
+  --spread: 140deg;
+  --start: 290deg;
+  mask: conic-gradient(
+    from var(--start),
+    white 0 var(--spread),
+    transparent var(--spread)
+  );
+}
+
+.underline-overflow {
+  display: inline-block;
+  /* A little extra padding and overflow hidden   */
+  overflow: hidden;
+  padding-bottom: clamp(1rem, 2vmin, 2rem);
+}
+
+.underline-clip:after {
+  content: "";
+  position: absolute;
+  top: 95%;
+  width: 150%;
+  aspect-ratio: 3 / 1;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border-radius: 50%;
+  border: 2px solid hsl(130 80% 50%);
+  /* Use a clip-path to hide and show the bits you want */
+  clip-path: polygon(0 0, 50% 50%, 100% 0);
 }
 
 .btn {
