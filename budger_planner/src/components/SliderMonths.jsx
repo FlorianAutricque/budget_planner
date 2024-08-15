@@ -68,7 +68,7 @@ function SliderMonths() {
   // console.log(previousMonthName);
 
   return (
-    <div className="sliderMonth pt-[2rem]">
+    <div className="sliderMonth pt-[2rem] px-2">
       <div className="flex items-center gap-2">
         <p className="cursor-pointer" onClick={sliderLeft}>
           <FaArrowLeft color="white" />

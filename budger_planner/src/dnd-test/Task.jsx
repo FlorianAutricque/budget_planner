@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import SumInputEachExpense from "./SumInputEachExpense";
-import DeleteExpense from "./DeleteExpense";
+import SumInputEachExpense from "../components/SumInputEachExpense";
+import DeleteExpense from "../components/DeleteExpense";
 
 function Task({
   id,

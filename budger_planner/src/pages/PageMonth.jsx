@@ -5,17 +5,15 @@ import useLocalStorage from "../utils/LocalStorage";
 import CapitalizeFirstLetter from "../utils/CapitalizeFirstLetter";
 
 import PieChart from "../components/PieChart";
-import DragAndDrop from "../components/DragAndDrop";
+import DragAndDrop from "../dnd-test/DragAndDrop";
 import SumInputEachExpense from "../components/SumInputEachExpense";
 import DeleteExpense from "../components/DeleteExpense";
 
-import { IoIosAddCircle } from "react-icons/io";
-import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
 import { GiPayMoney } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
-import { GiMoneyStack } from "react-icons/gi";
+
 import ModalAddExpense from "../components/ModalAddExpense";
 
 function PageMonth() {
