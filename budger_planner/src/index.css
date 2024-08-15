@@ -63,7 +63,7 @@ h1 {
   transform: translate(-50%, 0);
   border-radius: 50%;
   border: 2px solid hsl(280 80% 50%);
-  /* Use a conic gradient mask to hide and show the bits you want */
+
   --spread: 140deg;
   --start: 290deg;
   mask: conic-gradient(
@@ -75,7 +75,7 @@ h1 {
 
 .underline-overflow {
   display: inline-block;
-  /* A little extra padding and overflow hidden   */
+
   overflow: hidden;
   padding-bottom: clamp(1rem, 2vmin, 2rem);
 }
@@ -90,7 +90,7 @@ h1 {
   transform: translate(-50%, 0);
   border-radius: 50%;
   border: 2px solid hsl(130 80% 50%);
-  /* Use a clip-path to hide and show the bits you want */
+
   clip-path: polygon(0 0, 50% 50%, 100% 0);
 }
 
