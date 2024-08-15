@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { MdOutlineSavings } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const monthNames = {
   1: "January",
@@ -17,10 +18,11 @@ const monthNames = {
 };
 
 function Homepage({ month, name }) {
+  const { t } = useTranslation();
+
   const previousMonthId = month.id === 1 ? 12 : month.id - 1;
   const previousMonthName = monthNames[previousMonthId];
 
-  // Retrieve and parse the values from localStorage
   const previousMonthSavings = Number(
     localStorage.getItem(`savings-${previousMonthName}`) || 0
   );
@@ -33,7 +35,7 @@ function Homepage({ month, name }) {
 
   return (
     <div className="px-[1rem] flex flex-col items-center gap-8">
-      <h2 className="mt-10">Welcome to your budget planner</h2>
+      <h2 className="mt-10">{t("hello")}</h2>
 
       <p>
         We are in <strong>{name}</strong>, let&apos;s track our budget

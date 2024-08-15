@@ -1,4 +1,18 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 function Settings() {
+  const { i18n } = useTranslation();
+  const [active, setActive] = useState(
+    localStorage.getItem("selectedLanguage") || "en"
+  );
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem("selectedLanguage", lng);
+    setActive(lng);
+  };
+
   return (
     <div>
       <div>
@@ -9,8 +23,9 @@ function Settings() {
 
       <div>
         <p>Choose a language</p>
-        <button>Francais</button>
-        <button>English</button>
+        <button onClick={() => changeLanguage("fr")}>Francais</button>
+
+        <button onClick={() => changeLanguage("en")}>English</button>
       </div>
     </div>
   );
