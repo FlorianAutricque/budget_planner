@@ -139,6 +139,25 @@ function PageMonth() {
     localStorage.setItem(`savings-${monthName}`, savings);
   }, [overallSum, salary]);
 
+  //SET COLOR BILLS DEPENDING OF SUM
+  function setColorDependingSum(sum) {
+    if (sum === 0) {
+      return "var(--color-icon-blue)";
+    } else if (sum > 0 && sum < 80) {
+      return "#7bb570";
+    } else if (sum >= 80 && sum < 150) {
+      return "#f6d48f";
+    } else if (sum >= 150 && sum < 250) {
+      return "#e6a930";
+    } else if (sum >= 250 && sum < 350) {
+      return "#e15754";
+    } else if (sum >= 350 && sum < 450) {
+      return "#cf1b18";
+    } else {
+      return "#6b0201";
+    }
+  }
+
   return (
     <div className="px-[1rem]">
       <div ref={pie}>
@@ -151,7 +170,7 @@ function PageMonth() {
           className="flex items-center gap-4 rounded-3xl bg-white shadow-md mb-8 p-4"
         >
           <div>
-            <GiTakeMyMoney size={50} color="#27B7EE" />
+            <GiTakeMyMoney size={50} color="var(--color-icon-blue)" />
           </div>
           <div className="flex flex-col gap-4 w-full">
             <div
@@ -200,7 +219,7 @@ function PageMonth() {
             {moneySavedOrLoss < 0 ? (
               <GiPayMoney size={50} color="#F55D76" />
             ) : (
-              <GiReceiveMoney size={50} color="#27B7EE" />
+              <GiReceiveMoney size={50} color="var(--color-icon-blue)" />
             )}
           </div>
           <div className="flex w-full justify-between">
@@ -228,11 +247,11 @@ function PageMonth() {
           setShowModalAddExpense={setShowModalAddExpense}
         />
 
-        <div ref={expenses} className="mb-[5rem]">
+        <div ref={expenses} className="mb-[6rem]">
           {expensesName.map((expense) => (
             <div
               key={expense.id}
-              className="flex flex-col items-center gap-4 mb-10 rounded-3xl bg-white shadow-md p-4"
+              className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4"
             >
               <div className="flex justify-between w-full">
                 <strong className="text-xl">
@@ -249,15 +268,12 @@ function PageMonth() {
                 </div>
               </div>
               <div className="flex gap-4 w-full">
-                <div>
-                  <GiMoneyStack size={50} color="green" />
-                </div>
-
                 <div className="flex flex-col gap-2">
                   <SumInputEachExpense
                     monthName={monthName}
                     expenseId={expense.id}
                     onSumChange={handleSumChange}
+                    setColorDependingSum={setColorDependingSum}
                   />
                 </div>
               </div>

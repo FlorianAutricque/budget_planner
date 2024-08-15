@@ -51,7 +51,7 @@ function ModalAddExpense({
         onClick={handleShowModalAddExpense}
         className="z-50 fixed bottom-[70px] right-[10px]"
       >
-        <IoIosAddCircle color="blue" size={50} />
+        <IoIosAddCircle color="var(--btn-blue)" size={60} />
       </button>
       {showModalAddExpense && (
         <div ref={modalRef} className="modal">
