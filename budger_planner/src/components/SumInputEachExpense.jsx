@@ -37,7 +37,6 @@ function SumInputEachExpense({
     }
   };
 
-  // Determine icon color based on the sum
   const iconColor = setColorDependingSum(sum);
 
   return (
@@ -46,21 +45,22 @@ function SumInputEachExpense({
         <div>
           <GiMoneyStack size={50} color={iconColor} />
         </div>
-        <div className="flex flex-col gap-2">
+
+        <div className="flex flex-col gap-2  ">
           <div className="flex gap-4">
             <input
               type="number"
               value={inputValue}
               onChange={handleInputChange}
               placeholder={sum === 0 ? "Enter a value" : "Add a new value"}
-              className="bg-[var(--background-color)] border rounded-lg pl-2"
+              className="bg-[var(--background-color)] border rounded-lg pl-2 w-[100%]"
             />
             <button onClick={handleAddValue} className="btn">
               Add
             </button>
           </div>
 
-          <div className="flex justify-between w-full">
+          <div className="flex justify-between">
             <div className="flex justify-between w-full">
               <p>Total: </p>
               <p>
