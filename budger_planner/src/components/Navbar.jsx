@@ -2,6 +2,7 @@ import { GoHome } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { VscPieChart } from "react-icons/vsc";
 import { useState } from "react";
+import { IoSettingsOutline } from "react-icons/io5";
 
 function Navbar({ month }) {
   const [isActive, setIsActive] = useState(false);
@@ -31,6 +32,16 @@ function Navbar({ month }) {
         <span className="flex flex-col items-center ">
           <VscPieChart size={40} />
           <p className="text-xs">Budget</p>
+        </span>
+      </NavLink>
+
+      <NavLink
+        className={({ isActive }) => (isActive ? "text-[var(--btn-blue)]" : "")}
+        to="/settings"
+      >
+        <span className="flex flex-col items-center ">
+          <IoSettingsOutline size={40} />
+          <p className="text-xs">Settings</p>
         </span>
       </NavLink>
     </div>

@@ -4,6 +4,7 @@ import Homepage from "./pages/Homepage";
 import SliderMonths from "./components/SliderMonths";
 import PageMonth from "./pages/PageMonth";
 import Navbar from "./components/Navbar";
+import Settings from "./pages/Settings";
 
 function App() {
   const months = [
@@ -48,6 +49,7 @@ function App() {
             }
           />
           <Route path="month/:monthId" element={<PageMonth />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
         <Navbar month={month} />
       </BrowserRouter>
