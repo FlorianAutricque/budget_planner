@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useLocalStorage from "../utils/LocalStorage";
 
+import CapitalizeFirstLetter from "../utils/CapitalizeFirstLetter";
+
 import PieChart from "../components/PieChart";
 import DragAndDrop from "../components/DragAndDrop";
 import SumInputEachExpense from "../components/SumInputEachExpense";
@@ -14,6 +16,7 @@ import { GiReceiveMoney } from "react-icons/gi";
 import { GiPayMoney } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { GiMoneyStack } from "react-icons/gi";
+import ModalAddExpense from "../components/ModalAddExpense";
 
 function PageMonth() {
   const { monthId } = useParams();
@@ -84,44 +87,6 @@ function PageMonth() {
     toggleInputSalary();
   }
 
-  //SHOW MODAL
-  function handleShowModalAddExpense() {
-    setShowModalAddExpense(!showModalAddExpense);
-
-    if (pie.current) pie.current.classList.toggle("blur");
-    if (salaryRef.current) salaryRef.current.classList.toggle("blur");
-    if (sum.current) sum.current.classList.toggle("blur");
-    if (expenses.current) expenses.current.classList.toggle("blur");
-    if (money.current) money.current.classList.toggle("blur");
-  }
-
-  const modalRef = useRef(null);
-
-  //CLOSE MODAL CLICK OUTSIDE
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setShowModalAddExpense(false);
-        if (pie.current) pie.current.classList.remove("blur");
-        if (salaryRef.current) salaryRef.current.classList.remove("blur");
-        if (sum.current) sum.current.classList.remove("blur");
-        if (expenses.current) expenses.current.classList.remove("blur");
-        if (money.current) money.current.classList.remove("blur");
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  //CAPITALIZE FIRST LETTER
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
   function addNameOfExpense(e) {
     setValueNameExpense(e.target.value);
   }
@@ -139,7 +104,7 @@ function PageMonth() {
         JSON.stringify(updatedExpenses)
       );
     }
-    setShowModalAddExpense(!showModalAddExpense);
+    setShowModalAddExpense(false);
 
     if (pie.current) pie.current.classList.remove("blur");
     if (salaryRef.current) salaryRef.current.classList.remove("blur");
@@ -152,6 +117,7 @@ function PageMonth() {
     setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
   }
 
+  //CLOSE THE INPUT SECTION WHEN WHEN ADDED SALARY
   useEffect(() => {
     const storedVisibility = localStorage.getItem("inputSalaryVisible");
     setIsInputVisible(storedVisibility === "true");
@@ -165,14 +131,13 @@ function PageMonth() {
     });
   };
 
+  //CALCUL SAVINGS
   useEffect(() => {
     const savings = salary - overallSum;
     setMoneySavedOrLoss(savings);
 
     localStorage.setItem(`savings-${monthName}`, savings);
   }, [overallSum, salary]);
-
-  ////
 
   return (
     <div className="px-[1rem]">
@@ -250,33 +215,18 @@ function PageMonth() {
           </div>
         </div>
 
-        <button
-          onClick={handleShowModalAddExpense}
-          className="z-50 fixed bottom-[70px] right-[10px]"
-        >
-          <IoIosAddCircle color="blue" size={50} />
-        </button>
-        {showModalAddExpense && (
-          <div ref={modalRef} className="modal">
-            <span
-              onClick={handleShowModalAddExpense}
-              className="fixed right-2 top-2 cursor-pointer"
-            >
-              <IoMdCloseCircleOutline size={20} />
-            </span>
-            <h3>Add a new expense:</h3>
-            <input
-              value={valueNameExpense}
-              type="text"
-              placeholder="Fuel, Grocery ..."
-              onChange={addNameOfExpense}
-              className="border rounded-md bg-[var(--background-color)]"
-            />
-            <button onClick={addNewExpense} className="btn">
-              Add
-            </button>
-          </div>
-        )}
+        <ModalAddExpense
+          pie={pie}
+          salaryRef={salaryRef}
+          sum={sum}
+          expenses={expenses}
+          money={money}
+          valueNameExpense={valueNameExpense}
+          addNameOfExpense={addNameOfExpense}
+          addNewExpense={addNewExpense}
+          showModalAddExpense={showModalAddExpense}
+          setShowModalAddExpense={setShowModalAddExpense}
+        />
 
         <div ref={expenses} className="mb-[5rem]">
           {expensesName.map((expense) => (
@@ -286,7 +236,7 @@ function PageMonth() {
             >
               <div className="flex justify-between w-full">
                 <strong className="text-xl">
-                  {capitalizeFirstLetter(expense.name)}
+                  {CapitalizeFirstLetter(expense.name)}
                 </strong>
                 <div>
                   <DeleteExpense

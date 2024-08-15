@@ -22,14 +22,11 @@ function App() {
   ];
 
   const day = new Date();
-  const currentMonthIndex = day.getMonth(); // 0-based index for months
+  const currentMonthIndex = day.getMonth();
   const month = months[currentMonthIndex];
 
-  // Handle previous month logic
   const previousMonth =
-    currentMonthIndex === 0
-      ? months[11] // December
-      : months[currentMonthIndex - 1];
+    currentMonthIndex === 0 ? months[11] : months[currentMonthIndex - 1];
   const previousMonthName = previousMonth.nameMonth;
 
   const name = month ? month.nameMonth : "Unknown Month";
