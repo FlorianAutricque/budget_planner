@@ -58,6 +58,7 @@ function Settings() {
         <div className="flex justify-around w-[80%] rounded-xl border">
           <button
             ref={btnFrenchRef}
+            className="rounded-tl-xl rounded-tr-0 rounded-br-0 rounded-bl-xl w-[50%]"
             onClick={() => [
               changeLanguage("fr"),
               handleClickBtn(btnFrenchRef, btnEnglishRef),
@@ -68,6 +69,7 @@ function Settings() {
 
           <button
             ref={btnEnglishRef}
+            className="rounded-tl-0 rounded-tr-xl rounded-br-xl rounded-bl-0 w-[50%]"
             onClick={() => [
               changeLanguage("en"),
               handleClickBtn(btnEnglishRef, btnFrenchRef),
