@@ -15,14 +15,14 @@ function Navbar({ month }) {
 
   return (
     <div
-      className="fixed bottom-0 left-0 w-full bg-white border-t-2 pt-[8px] flex items-center justify-center gap-10"
+      className="fixed bottom-0 left-0 w-full bg-white border-t-2 pt-[8px] flex items-center justify-around"
       onClick={toggleActiveClass}
     >
       <NavLink
         className={({ isActive }) => (isActive ? "text-[var(--btn-blue)]" : "")}
         to="/"
       >
-        <span className="flex flex-col items-center ">
+        <span className="flex flex-col items-center w-4 ">
           <GoHome size={40} /> <p className="text-xs">Home</p>
         </span>
       </NavLink>
@@ -31,7 +31,7 @@ function Navbar({ month }) {
         className={({ isActive }) => (isActive ? "text-[var(--btn-blue)]" : "")}
         to={`/month/${month.id}`}
       >
-        <span className="flex flex-col items-center ">
+        <span className="flex flex-col items-center w-4">
           <VscPieChart size={40} />
           <p className="text-xs">Budget</p>
         </span>
@@ -41,7 +41,7 @@ function Navbar({ month }) {
         className={({ isActive }) => (isActive ? "text-[var(--btn-blue)]" : "")}
         to="/settings"
       >
-        <span className="flex flex-col items-center ">
+        <span className="flex flex-col items-center w-4">
           <IoSettingsOutline size={40} />
           <p className="text-xs">{t("NAVBAR_ICONS.SETTINGS")}</p>
         </span>

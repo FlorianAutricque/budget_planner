@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function Settings() {
@@ -10,22 +10,52 @@ function Settings() {
   const btnFrenchRef = useRef(null);
   const btnEnglishRef = useRef(null);
 
-  const [active, setActive] = useState(
+  const [activeLanguage, setActiveLanguage] = useState(
     localStorage.getItem("selectedLanguage") || "en"
   );
+  const [activeCurrency, setActiveCurrency] = useState(
+    localStorage.getItem("selectedCurrency") || "euro"
+  );
+
+  useEffect(() => {
+    if (activeLanguage === "fr") {
+      handleClickBtn(btnFrenchRef, btnEnglishRef, "fr", false);
+    } else {
+      handleClickBtn(btnEnglishRef, btnFrenchRef, "en", false);
+    }
+
+    if (activeCurrency === "euro") {
+      handleClickBtn(btnEuroRef, btnDollarRef, "euro", false);
+    } else {
+      handleClickBtn(btnDollarRef, btnEuroRef, "dollar", false);
+    }
+  }, [activeLanguage, activeCurrency]);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("selectedLanguage", lng);
-    setActive(lng);
+    setActiveLanguage(lng);
   };
 
-  const handleClickBtn = (firstRef, secondRef) => {
+  const changeCurrency = (currency) => {
+    localStorage.setItem("selectedCurrency", currency);
+    setActiveCurrency(currency);
+  };
+
+  const handleClickBtn = (firstRef, secondRef, type, save = true) => {
     if (firstRef.current && secondRef.current) {
       firstRef.current.style.backgroundColor = "var(--btn-blue)";
       secondRef.current.style.backgroundColor = "white";
       firstRef.current.style.color = "white";
       secondRef.current.style.color = "black";
+
+      if (save) {
+        if (type === "fr" || type === "en") {
+          changeLanguage(type);
+        } else {
+          changeCurrency(type);
+        }
+      }
     }
   };
 
@@ -38,7 +68,7 @@ function Settings() {
           <button
             ref={btnEuroRef}
             className="rounded-tl-xl rounded-tr-0 rounded-br-0 rounded-bl-xl w-[50%]"
-            onClick={() => handleClickBtn(btnEuroRef, btnDollarRef)}
+            onClick={() => handleClickBtn(btnEuroRef, btnDollarRef, "euro")}
           >
             EURO
           </button>
@@ -46,7 +76,7 @@ function Settings() {
           <button
             ref={btnDollarRef}
             className="rounded-tl-0 rounded-tr-xl rounded-br-xl rounded-bl-0 w-[50%]"
-            onClick={() => handleClickBtn(btnDollarRef, btnEuroRef)}
+            onClick={() => handleClickBtn(btnDollarRef, btnEuroRef, "dollar")}
           >
             DOLLAR
           </button>
@@ -59,10 +89,7 @@ function Settings() {
           <button
             ref={btnFrenchRef}
             className="rounded-tl-xl rounded-tr-0 rounded-br-0 rounded-bl-xl w-[50%]"
-            onClick={() => [
-              changeLanguage("fr"),
-              handleClickBtn(btnFrenchRef, btnEnglishRef),
-            ]}
+            onClick={() => handleClickBtn(btnFrenchRef, btnEnglishRef, "fr")}
           >
             Francais
           </button>
@@ -70,10 +97,7 @@ function Settings() {
           <button
             ref={btnEnglishRef}
             className="rounded-tl-0 rounded-tr-xl rounded-br-xl rounded-bl-0 w-[50%]"
-            onClick={() => [
-              changeLanguage("en"),
-              handleClickBtn(btnEnglishRef, btnFrenchRef),
-            ]}
+            onClick={() => handleClickBtn(btnEnglishRef, btnFrenchRef, "en")}
           >
             English
           </button>
