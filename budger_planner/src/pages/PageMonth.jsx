@@ -15,8 +15,10 @@ import { GiPayMoney } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 
 import ModalAddExpense from "../components/ModalAddExpense";
+import { useTranslation } from "react-i18next";
 
 function PageMonth() {
+  const { t } = useTranslation();
   const { monthId } = useParams();
 
   const [value, setValue] = useState("");
@@ -37,18 +39,18 @@ function PageMonth() {
   const money = useRef(null);
 
   const monthNames = {
-    1: "January",
-    2: "February",
-    3: "March",
-    4: "April",
-    5: "May",
-    6: "June",
-    7: "July",
-    8: "August",
-    9: "September",
-    10: "October",
-    11: "November",
-    12: "December",
+    1: t("MONTH_NAVBAR.1"),
+    2: t("MONTH_NAVBAR.2"),
+    3: t("MONTH_NAVBAR.3"),
+    4: t("MONTH_NAVBAR.4"),
+    5: t("MONTH_NAVBAR.5"),
+    6: t("MONTH_NAVBAR.6"),
+    7: t("MONTH_NAVBAR.7"),
+    8: t("MONTH_NAVBAR.8"),
+    9: t("MONTH_NAVBAR.9"),
+    10: t("MONTH_NAVBAR.10"),
+    11: t("MONTH_NAVBAR.11"),
+    12: t("MONTH_NAVBAR.12"),
   };
 
   const monthName = monthNames[monthId] || "Unknown Month";
@@ -181,17 +183,19 @@ function PageMonth() {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 type="number"
-                placeholder="Your salary"
+                placeholder={t("PAGE_MONTH.SALARY.PLACEHOLDER")}
                 className="bg-[var(--background-color)] border rounded-lg pl-2 w-full"
               />
 
               <button onClick={handleClick} className="btn">
-                Add
+                {t("PAGE_MONTH.BTN_ADD")}
               </button>
             </div>
 
             <div className="flex gap-2 justify-between">
-              <p className="flex items-center">Salary:</p>
+              <p className="flex items-center">
+                {t("PAGE_MONTH.SALARY.SALARY")}
+              </p>
 
               <p>
                 <strong>
@@ -222,8 +226,12 @@ function PageMonth() {
           </div>
           <div className="flex w-full justify-between">
             <div className="text-left">
-              <p>Total expenses: </p>
-              <p>{moneySavedOrLoss < 0 ? "Loss: " : "Saved: "}</p>
+              <p>{t("PAGE_MONTH.TOTAL.TOTAL_EXPENSES")} </p>
+              <p>
+                {moneySavedOrLoss < 0
+                  ? `${t("PAGE_MONTH.TOTAL.LOSS")}`
+                  : `${t("PAGE_MONTH.TOTAL.SAVED")}`}
+              </p>
             </div>
             <div className="flex flex-col">
               <strong>€{overallSum.toLocaleString("de-DE")}</strong>

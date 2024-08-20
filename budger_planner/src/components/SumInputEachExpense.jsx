@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { GiMoneyStack } from "react-icons/gi";
 
 function SumInputEachExpense({
@@ -7,6 +8,7 @@ function SumInputEachExpense({
   onSumChange,
   setColorDependingSum,
 }) {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
   const [sum, setSum] = useState(0);
   const previousSumRef = useRef(0);
@@ -56,7 +58,7 @@ function SumInputEachExpense({
               className="bg-[var(--background-color)] border rounded-lg pl-2 w-[100%]"
             />
             <button onClick={handleAddValue} className="btn">
-              Add
+              {t("PAGE_MONTH.BTN_ADD")}
             </button>
           </div>
 

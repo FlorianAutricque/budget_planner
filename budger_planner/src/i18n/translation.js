@@ -39,7 +39,7 @@ i18n.use(initReactI18next).init({
           },
           BUTTON: "Start now",
           PREVIOUS_MONTH: {
-            SAVINGS: "savings",
+            SAVINGS: "savings:",
             EARNED: "Earned",
             SAVED: "Saved",
             SPENT: "Spent",
@@ -49,12 +49,13 @@ i18n.use(initReactI18next).init({
           BTN_ADD: "Add",
           PIE: "Expense Categories",
           SALARY: {
-            SALARY: "Salary",
+            SALARY: "Salary:",
+            PLACEHOLDER: "Your salary",
           },
           TOTAL: {
-            TOTAL_EXPENSES: "total expenses",
-            LOSS: "Loss",
-            SAVED: "Saved",
+            TOTAL_EXPENSES: "Total expenses:",
+            LOSS: "Loss: ",
+            SAVED: "Saved: ",
           },
           EACH_EXPENSE: {
             PLACEHOLDER_ENTER: "Enter a value",
@@ -85,7 +86,7 @@ i18n.use(initReactI18next).init({
           5: "Mai",
           6: "Juin",
           7: "Juillet",
-          8: "Aout",
+          8: "Août",
           9: "Septembre",
           10: "Octobre",
           11: "Novembre",
@@ -94,7 +95,7 @@ i18n.use(initReactI18next).init({
         NAVBAR_ICONS: {
           HOME: "Home",
           BUDGET: "Budget",
-          SETTINGS: "Paramètre",
+          SETTINGS: "Paramètres",
         },
         HOMEPAGE: {
           SLOGAN: {
@@ -112,35 +113,36 @@ i18n.use(initReactI18next).init({
             SAVINGS: "Economies de",
             EARNED: "Gagné",
             SAVED: "Économisé",
-            SPENT: "Économisé",
+            SPENT: "Dépensé",
           },
         },
         PAGE_MONTH: {
           BTN_ADD: "Ajouter",
-          PIE: "Categories des depenses",
+          PIE: "Catégories des dépenses",
           SALARY: {
-            SALARY: "Salary",
+            SALARY: "Salaire :",
+            PLACEHOLDER: "Votre salaire",
           },
           TOTAL: {
-            TOTAL_EXPENSES: "total expenses",
-            LOSS: "Loss",
-            SAVED: "Saved",
+            TOTAL_EXPENSES: "Dépenses total :",
+            LOSS: "Perte : ",
+            SAVED: "Economie : ",
           },
           EACH_EXPENSE: {
-            PLACEHOLDER_ENTER: "Enter a value",
-            PLACEHOLDER_ADD: "Add a new value",
+            PLACEHOLDER_ENTER: "Entrez une valeure",
+            PLACEHOLDER_ADD: "Ajoute une nouvelle valeur",
           },
           INPUT_NEW_EXP: {
-            TITLE: "Add a new expense:",
-            PLACEHOLDER: "Fuel, Grocery...",
+            TITLE: "Ajoutez une nouvelle dépense :",
+            PLACEHOLDER: "Essence, Course...",
           },
         },
         SETTINGS: {
           CURRENCY: {
-            TITLE: "Choose a currency",
+            TITLE: "Choisir une monnaie",
           },
           LNG: {
-            TITLE: "Choose a language",
+            TITLE: "Choisir une langue",
           },
         },
       },

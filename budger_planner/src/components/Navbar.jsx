@@ -3,8 +3,10 @@ import { NavLink } from "react-router-dom";
 import { VscPieChart } from "react-icons/vsc";
 import { useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 function Navbar({ month }) {
+  const { t } = useTranslation();
   const [isActive, setIsActive] = useState(false);
 
   const toggleActiveClass = () => {
@@ -41,7 +43,7 @@ function Navbar({ month }) {
       >
         <span className="flex flex-col items-center ">
           <IoSettingsOutline size={40} />
-          <p className="text-xs">Settings</p>
+          <p className="text-xs">{t("NAVBAR_ICONS.SETTINGS")}</p>
         </span>
       </NavLink>
     </div>

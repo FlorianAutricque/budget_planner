@@ -2,23 +2,23 @@ import { NavLink } from "react-router-dom";
 import { MdOutlineSavings } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
-const monthNames = {
-  1: "January",
-  2: "February",
-  3: "March",
-  4: "April",
-  5: "May",
-  6: "June",
-  7: "July",
-  8: "August",
-  9: "September",
-  10: "October",
-  11: "November",
-  12: "December",
-};
-
 function Homepage({ month, name }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lng = i18n.language;
+  const monthNames = {
+    1: t("MONTH_NAVBAR.1"),
+    2: t("MONTH_NAVBAR.2"),
+    3: t("MONTH_NAVBAR.3"),
+    4: t("MONTH_NAVBAR.4"),
+    5: t("MONTH_NAVBAR.5"),
+    6: t("MONTH_NAVBAR.6"),
+    7: t("MONTH_NAVBAR.7"),
+    8: t("MONTH_NAVBAR.8"),
+    9: t("MONTH_NAVBAR.9"),
+    10: t("MONTH_NAVBAR.10"),
+    11: t("MONTH_NAVBAR.11"),
+    12: t("MONTH_NAVBAR.12"),
+  };
 
   const previousMonthId = month.id === 1 ? 12 : month.id - 1;
   const previousMonthName = monthNames[previousMonthId];
@@ -46,12 +46,12 @@ function Homepage({ month, name }) {
         <span className="underlined underline-mask">Expenses</span>
       </h1>
 
-      <p>
-        We are in <strong>{name}</strong>, let&apos;s track our budget
+      <p className="text-center">
+        {t("HOMEPAGE.MONTH.1")} <strong>{name}</strong>, {t("HOMEPAGE.MONTH.2")}
       </p>
 
       <NavLink to={`/month/${month.id}`} className="btn text-center">
-        Start now
+        {t("HOMEPAGE.BUTTON")}
       </NavLink>
 
       <h2>Previous month:</h2>
@@ -60,8 +60,15 @@ function Homepage({ month, name }) {
         <div className="flex flex-col text-center rounded-3xl bg-white shadow-md mb-8 p-4">
           <div>
             <p className="text-left text-[#c6c6c6]">
-              {previousMonthName} savings:&nbsp;
+              {lng === "fr"
+                ? `${t(
+                    "HOMEPAGE.PREVIOUS_MONTH.SAVINGS"
+                  )} ${previousMonthName} :`
+                : `${previousMonthName} ${t(
+                    "HOMEPAGE.PREVIOUS_MONTH.SAVINGS"
+                  )}`}
             </p>
+
             <span className="flex items-center gap-2">
               <MdOutlineSavings />€
               {previousMonthSavings.toLocaleString("de-DE")}
@@ -69,20 +76,24 @@ function Homepage({ month, name }) {
           </div>
 
           <div className="flex justify-center items-center flex-col gap-4 mt-4">
-            <div className="flex justify-around w-[80%] rounded-xl bg-[#27B7EE]">
-              <p className="text-white">Earned</p>
+            <div className="flex justify-between px-10 w-[80%] rounded-xl bg-[#27B7EE]">
+              <p className="text-white">
+                {t("HOMEPAGE.PREVIOUS_MONTH.EARNED")}
+              </p>
               <p>€{previousMonthEarnings.toLocaleString("de-DE")}</p>
             </div>
 
-            <div className="flex justify-around w-[80%] rounded-xl bg-[#47cd3b]">
+            <div className="flex justify-between px-10 w-[80%] rounded-xl bg-[#47cd3b]">
               <p className="text-white">
-                {previousMonthSavings >= 0 ? "Saved" : "Loss"}
+                {previousMonthSavings >= 0
+                  ? `${t("HOMEPAGE.PREVIOUS_MONTH.SAVED")}`
+                  : `${t("HOMEPAGE.PREVIOUS_MONTH.LOSS")}`}
               </p>
               <p>€{previousMonthSavings.toLocaleString("de-DE")}</p>
             </div>
 
-            <div className="flex justify-around w-[80%] rounded-xl bg-[#F55D76]">
-              <p className="text-white">Spent</p>
+            <div className="flex justify-between px-10 w-[80%] rounded-xl bg-[#F55D76]">
+              <p className="text-white">{t("HOMEPAGE.PREVIOUS_MONTH.SPENT")}</p>
               <p>€{previousMonthSpending.toLocaleString("de-DE")}</p>
             </div>
           </div>

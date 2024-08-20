@@ -1,6 +1,9 @@
 import ReactEcharts from "echarts-for-react";
+import { useTranslation } from "react-i18next";
 
 function PieChart({ monthName, expensesName }) {
+  const { t } = useTranslation();
+
   const getOption = () => {
     return {
       title: {
@@ -17,7 +20,7 @@ function PieChart({ monthName, expensesName }) {
       },
       series: [
         {
-          name: expensesName.length === 0 ? "" : "Expense Categories",
+          name: expensesName.length === 0 ? "" : t("PAGE_MONTH.PIE"),
           type: "pie",
           radius: ["40%", "70%"],
           center: ["65%", "50%"],

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { IoIosAddCircle } from "react-icons/io";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
@@ -14,6 +15,7 @@ function ModalAddExpense({
   showModalAddExpense,
   setShowModalAddExpense,
 }) {
+  const { t } = useTranslation();
   function handleShowModalAddExpense() {
     setShowModalAddExpense(!showModalAddExpense);
 
@@ -61,16 +63,16 @@ function ModalAddExpense({
           >
             <IoMdCloseCircleOutline size={20} />
           </span>
-          <h3>Add a new expense:</h3>
+          <h3>{t("PAGE_MONTH.INPUT_NEW_EXP.TITLE")}</h3>
           <input
             value={valueNameExpense}
             type="text"
-            placeholder="Fuel, Grocery ..."
+            placeholder={t("PAGE_MONTH.INPUT_NEW_EXP.PLACEHOLDER")}
             onChange={addNameOfExpense}
             className="border rounded-md bg-[var(--background-color)]"
           />
           <button onClick={addNewExpense} className="btn">
-            Add
+            {t("PAGE_MONTH.BTN_ADD")}
           </button>
         </div>
       )}

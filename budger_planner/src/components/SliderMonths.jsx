@@ -1,21 +1,23 @@
 import { NavLink } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 function SliderMonths() {
+  const { t } = useTranslation();
   const months = [
-    { id: 1, nameMonth: "January" },
-    { id: 2, nameMonth: "February" },
-    { id: 3, nameMonth: "March" },
-    { id: 4, nameMonth: "April" },
-    { id: 5, nameMonth: "May" },
-    { id: 6, nameMonth: "June" },
-    { id: 7, nameMonth: "July" },
-    { id: 8, nameMonth: "August" },
-    { id: 9, nameMonth: "September" },
-    { id: 10, nameMonth: "October" },
-    { id: 11, nameMonth: "November" },
-    { id: 12, nameMonth: "December" },
+    { id: 1, nameMonth: t("MONTH_NAVBAR.1") },
+    { id: 2, nameMonth: t("MONTH_NAVBAR.2") },
+    { id: 3, nameMonth: t("MONTH_NAVBAR.3") },
+    { id: 4, nameMonth: t("MONTH_NAVBAR.4") },
+    { id: 5, nameMonth: t("MONTH_NAVBAR.5") },
+    { id: 6, nameMonth: t("MONTH_NAVBAR.6") },
+    { id: 7, nameMonth: t("MONTH_NAVBAR.7") },
+    { id: 8, nameMonth: t("MONTH_NAVBAR.8") },
+    { id: 9, nameMonth: t("MONTH_NAVBAR.9") },
+    { id: 10, nameMonth: t("MONTH_NAVBAR.10") },
+    { id: 11, nameMonth: t("MONTH_NAVBAR.11") },
+    { id: 12, nameMonth: t("MONTH_NAVBAR.12") },
   ];
 
   const [isActive, setIsActive] = useState(false);
