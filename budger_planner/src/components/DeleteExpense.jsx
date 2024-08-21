@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 
 function DeleteExpense({
-  monthName,
+  monthIdParsed,
   expensesName,
   setExpensesName,
   expense,
@@ -17,7 +17,8 @@ function DeleteExpense({
     console.log("Deleting expense with ID:", expenseId);
 
     const deletedExpenseSum =
-      parseFloat(localStorage.getItem(`sum-${monthName}-${expenseId}`)) || 0;
+      parseFloat(localStorage.getItem(`sum-${monthIdParsed}-${expenseId}`)) ||
+      0;
     console.log("Sum for deleted expense:", deletedExpenseSum);
 
     const updatedExpenses = expensesName.filter((exp) => exp.id !== expenseId);
@@ -26,13 +27,13 @@ function DeleteExpense({
     setExpensesName(updatedExpenses);
     setOverallSum((prevOverallSum) => prevOverallSum - deletedExpenseSum);
     if (updatedExpenses.length === 0) {
-      window.localStorage.setItem(`sum-${monthName}`, 0);
+      window.localStorage.setItem(`sum-${monthIdParsed}`, 0);
     }
     window.localStorage.setItem(
-      `expenses-${monthName}`,
+      `expenses-${monthIdParsed}`,
       JSON.stringify(updatedExpenses)
     );
-    localStorage.removeItem(`sum-${monthName}-${expenseId}`);
+    localStorage.removeItem(`sum-${monthIdParsed}-${expenseId}`);
 
     setIsDeleting(false);
   };

@@ -1,37 +1,29 @@
 import { NavLink } from "react-router-dom";
 import { MdOutlineSavings } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import Months from "../utils/Months";
 
 function Homepage({ month, name }) {
   const { t, i18n } = useTranslation();
   const lng = i18n.language;
-  const monthNames = {
-    1: t("MONTH_NAVBAR.1"),
-    2: t("MONTH_NAVBAR.2"),
-    3: t("MONTH_NAVBAR.3"),
-    4: t("MONTH_NAVBAR.4"),
-    5: t("MONTH_NAVBAR.5"),
-    6: t("MONTH_NAVBAR.6"),
-    7: t("MONTH_NAVBAR.7"),
-    8: t("MONTH_NAVBAR.8"),
-    9: t("MONTH_NAVBAR.9"),
-    10: t("MONTH_NAVBAR.10"),
-    11: t("MONTH_NAVBAR.11"),
-    12: t("MONTH_NAVBAR.12"),
-  };
 
-  const previousMonthId = month.id === 1 ? 12 : month.id - 1;
-  const previousMonthName = monthNames[previousMonthId];
+  const monthNames = Months();
+
+  const previousMonthId =
+    month && month.id === 1 ? 12 : month ? month.id - 1 : 12;
+
+  const previousMonth = monthNames.find((m) => m.id === previousMonthId);
+
+  const previousMonthName = previousMonth
+    ? previousMonth.nameMonth
+    : "Unknown Month";
 
   const previousMonthSavings = Number(
-    localStorage.getItem(`savings-${previousMonthName}`) || 0
+    localStorage.getItem(`savings-${previousMonthId}`) || 0
   );
 
-  const previousMonthEarnings = localStorage.getItem(`displayValue`)
-    ? Number(
-        JSON.parse(localStorage.getItem(`displayValue`))[previousMonthName]
-      ) || 0
-    : 0;
+  const displayValue = JSON.parse(localStorage.getItem("displayValue")) || {};
+  const previousMonthEarnings = Number(displayValue[previousMonthId] || 0);
 
   const previousMonthSpending = previousMonthEarnings - previousMonthSavings;
 
@@ -41,7 +33,7 @@ function Homepage({ month, name }) {
 
       <h1>
         Plan For&nbsp;
-        <span className="underlined underline-clip">Sucess</span>&nbsp;& Track
+        <span className="underlined underline-clip">Success</span>&nbsp; & Track
         Your&nbsp;
         <span className="underlined underline-mask">Expenses</span>
       </h1>

@@ -17,6 +17,8 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import ModalAddExpense from "../components/ModalAddExpense";
 import { useTranslation } from "react-i18next";
 
+import Months from "../utils/Months";
+
 function PageMonth() {
   const { t } = useTranslation();
   const { monthId } = useParams();
@@ -38,51 +40,49 @@ function PageMonth() {
   const expenses = useRef(null);
   const money = useRef(null);
 
-  const monthNames = {
-    1: t("MONTH_NAVBAR.1"),
-    2: t("MONTH_NAVBAR.2"),
-    3: t("MONTH_NAVBAR.3"),
-    4: t("MONTH_NAVBAR.4"),
-    5: t("MONTH_NAVBAR.5"),
-    6: t("MONTH_NAVBAR.6"),
-    7: t("MONTH_NAVBAR.7"),
-    8: t("MONTH_NAVBAR.8"),
-    9: t("MONTH_NAVBAR.9"),
-    10: t("MONTH_NAVBAR.10"),
-    11: t("MONTH_NAVBAR.11"),
-    12: t("MONTH_NAVBAR.12"),
-  };
+  const monthNames = Months();
+  const monthIdParsed = parseInt(monthId, 10);
 
-  const monthName = monthNames[monthId] || "Unknown Month";
+  const currentMonthID = monthNames.find((m) => m.id === monthIdParsed);
+  const monthName = currentMonthID?.nameMonth || "Unknown Month";
 
   // LOCALSTORAGE
   useEffect(() => {
-    setValue(displayValue[monthName] || "");
-    setSalary(displayValue[monthName] || 0);
+    if (monthIdParsed) {
+      setValue(displayValue[monthIdParsed] || "");
+      setSalary(displayValue[monthIdParsed] || 0);
 
-    const storedExpenses =
-      JSON.parse(window.localStorage.getItem(`expenses-${monthName}`)) || [];
-    setExpensesName(storedExpenses);
+      const storedExpenses =
+        JSON.parse(window.localStorage.getItem(`expenses-${monthIdParsed}`)) ||
+        [];
+      setExpensesName(storedExpenses);
 
-    let initialOverallSum = 0;
-    storedExpenses.forEach((expense) => {
-      const storedSum =
-        parseFloat(localStorage.getItem(`sum-${monthName}-${expense.id}`)) || 0;
-      initialOverallSum += storedSum;
-    });
-    setOverallSum(initialOverallSum);
-  }, [monthName, displayValue]);
+      let initialOverallSum = 0;
+      storedExpenses.forEach((expense) => {
+        const storedSum =
+          parseFloat(
+            localStorage.getItem(`sum-${monthIdParsed}-${expense.id}`)
+          ) || 0;
+        initialOverallSum += storedSum;
+      });
+      setOverallSum(initialOverallSum);
+    }
+  }, [monthIdParsed, displayValue]);
 
   //CALCUL SAVED OR LOSS
   useEffect(() => {
-    setMoneySavedOrLoss(salary - overallSum);
-  }, [overallSum, salary]);
+    if (monthIdParsed) {
+      const savings = salary - overallSum;
+      setMoneySavedOrLoss(savings);
+      localStorage.setItem(`savings-${monthIdParsed}`, savings);
+    }
+  }, [overallSum, salary, monthIdParsed]);
 
   //HANDLE DISPLAY VALUE
   function handleClick() {
     setDisplayValue((prev) => ({
       ...prev,
-      [monthName]: value,
+      [monthIdParsed]: value,
     }));
     toggleInputSalary();
   }
@@ -100,7 +100,7 @@ function PageMonth() {
       setValueNameExpense("");
 
       window.localStorage.setItem(
-        `expenses-${monthName}`,
+        `expenses-${monthIdParsed}`,
         JSON.stringify(updatedExpenses)
       );
     }
@@ -114,7 +114,9 @@ function PageMonth() {
   }
 
   function handleSumChange(expenseSum) {
-    setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
+    if (monthIdParsed) {
+      setOverallSum((prevOverallSum) => prevOverallSum + expenseSum);
+    }
   }
 
   //CLOSE THE INPUT SECTION WHEN WHEN ADDED SALARY
@@ -132,12 +134,12 @@ function PageMonth() {
   };
 
   //CALCUL SAVINGS
-  useEffect(() => {
-    const savings = salary - overallSum;
-    setMoneySavedOrLoss(savings);
+  // useEffect(() => {
+  //   const savings = salary - overallSum;
+  //   setMoneySavedOrLoss(savings);
 
-    localStorage.setItem(`savings-${monthName}`, savings);
-  }, [overallSum, salary]);
+  //   localStorage.setItem(`savings-${monthIdParsed}`, savings);
+  // }, [overallSum, salary]);
 
   //SET COLOR BILLS DEPENDING OF SUM
   function setColorDependingSum(sum) {
@@ -200,7 +202,9 @@ function PageMonth() {
               <p>
                 <strong>
                   €
-                  {Number(displayValue[monthName] || 0).toLocaleString("de-DE")}
+                  {Number(displayValue[monthIdParsed] || 0).toLocaleString(
+                    "de-DE"
+                  )}
                 </strong>
               </p>
               <button
@@ -265,7 +269,7 @@ function PageMonth() {
                 </strong>
                 <div>
                   <DeleteExpense
-                    monthName={monthName}
+                    monthIdParsed={monthIdParsed}
                     expensesName={expensesName}
                     setExpensesName={setExpensesName}
                     expense={expense}
@@ -276,7 +280,7 @@ function PageMonth() {
               <div className="flex gap-4 w-full">
                 <div className="flex flex-col gap-2">
                   <SumInputEachExpense
-                    monthName={monthName}
+                    monthIdParsed={monthIdParsed}
                     expenseId={expense.id}
                     onSumChange={handleSumChange}
                     setColorDependingSum={setColorDependingSum}

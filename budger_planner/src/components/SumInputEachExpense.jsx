@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { GiMoneyStack } from "react-icons/gi";
 
 function SumInputEachExpense({
-  monthName,
+  monthIdParsed,
   expenseId,
   onSumChange,
   setColorDependingSum,
@@ -14,13 +14,13 @@ function SumInputEachExpense({
   const previousSumRef = useRef(0);
 
   useEffect(() => {
-    const storedSum = localStorage.getItem(`sum-${monthName}-${expenseId}`);
+    const storedSum = localStorage.getItem(`sum-${monthIdParsed}-${expenseId}`);
     if (storedSum) {
       const parsedSum = parseFloat(storedSum);
       setSum(parsedSum);
       previousSumRef.current = parsedSum;
     }
-  }, [monthName, expenseId]);
+  }, [monthIdParsed, expenseId]);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -32,7 +32,7 @@ function SumInputEachExpense({
       const newSum = sum + numericValue;
       const difference = newSum - previousSumRef.current;
       setSum(newSum);
-      localStorage.setItem(`sum-${monthName}-${expenseId}`, newSum);
+      localStorage.setItem(`sum-${monthIdParsed}-${expenseId}`, newSum);
       setInputValue("");
       onSumChange(difference);
       previousSumRef.current = newSum;
