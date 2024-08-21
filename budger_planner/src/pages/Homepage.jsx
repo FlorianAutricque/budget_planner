@@ -60,6 +60,8 @@ function Homepage({ month, name }) {
     },
   ];
 
+  const currency = localStorage.getItem("selectedCurrency");
+
   return (
     <div className="px-[1rem] flex flex-col items-center gap-8">
       <p className="title mt-10 text-3xl">PLUTUS</p>
@@ -80,8 +82,8 @@ function Homepage({ month, name }) {
       </NavLink>
 
       <div className="mb-[8rem] w-full">
-        {monthData.map((data) => (
-          <>
+        {monthData.map((data, index) => (
+          <div key={index}>
             <NavLink to={`/month/${data.MonthId}`} className="w-full">
               <div className="flex flex-col text-center rounded-3xl bg-white shadow-md mb-2 p-4">
                 <div>
@@ -96,7 +98,8 @@ function Homepage({ month, name }) {
                   </p>
 
                   <span className="flex items-center gap-2">
-                    <MdOutlineSavings />€
+                    <MdOutlineSavings />
+                    {currency === "euro" ? "€" : "$"}
                     {data.MonthSavings.toLocaleString("de-DE")}
                   </span>
                 </div>
@@ -106,7 +109,10 @@ function Homepage({ month, name }) {
                     <p className="text-white">
                       {t("HOMEPAGE.PREVIOUS_MONTH.EARNED")}
                     </p>
-                    <p>€{data.MonthEarnings.toLocaleString("de-DE")}</p>
+                    <p>
+                      {currency === "euro" ? "€" : "$"}
+                      {data.MonthEarnings.toLocaleString("de-DE")}
+                    </p>
                   </div>
 
                   <div className="flex justify-between px-10 w-[80%] rounded-xl bg-[#47cd3b]">
@@ -115,19 +121,25 @@ function Homepage({ month, name }) {
                         ? `${t("HOMEPAGE.PREVIOUS_MONTH.SAVED")}`
                         : `${t("HOMEPAGE.PREVIOUS_MONTH.LOSS")}`}
                     </p>
-                    <p>€{data.MonthSavings.toLocaleString("de-DE")}</p>
+                    <p>
+                      {currency === "euro" ? "€" : "$"}
+                      {data.MonthSavings.toLocaleString("de-DE")}
+                    </p>
                   </div>
 
                   <div className="flex justify-between px-10 w-[80%] rounded-xl bg-[#F55D76]">
                     <p className="text-white">
                       {t("HOMEPAGE.PREVIOUS_MONTH.SPENT")}
                     </p>
-                    <p>€{data.MonthSpending.toLocaleString("de-DE")}</p>
+                    <p>
+                      {currency === "euro" ? "€" : "$"}
+                      {data.MonthSpending.toLocaleString("de-DE")}
+                    </p>
                   </div>
                 </div>
               </div>
             </NavLink>
-          </>
+          </div>
         ))}
       </div>
     </div>
