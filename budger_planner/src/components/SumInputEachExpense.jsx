@@ -48,7 +48,7 @@ function SumInputEachExpense({
           <GiMoneyStack size={50} color={iconColor} />
         </div>
 
-        <div className="flex flex-col gap-2  ">
+        <div className="flex flex-col gap-2 w-full">
           <div className="flex gap-4">
             <input
               type="number"

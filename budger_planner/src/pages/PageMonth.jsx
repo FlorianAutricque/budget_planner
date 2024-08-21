@@ -257,7 +257,7 @@ function PageMonth() {
           setShowModalAddExpense={setShowModalAddExpense}
         />
 
-        <div ref={expenses} className="mb-[6rem]">
+        <div ref={expenses} className="mb-[7rem]">
           {expensesName.map((expense) => (
             <div
               key={expense.id}
@@ -278,7 +278,7 @@ function PageMonth() {
                 </div>
               </div>
               <div className="flex gap-4 w-full">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 w-full">
                   <SumInputEachExpense
                     monthIdParsed={monthIdParsed}
                     expenseId={expense.id}
