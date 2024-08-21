@@ -42,10 +42,6 @@ function SliderMonths() {
   }
 
   const currentMonthIndex = new Date().getMonth();
-  // const previousMonthIndex =
-  //   currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
-
-  // const previousMonthName = months[previousMonthIndex].nameMonth;
 
   useEffect(() => {
     const slider = sliderRef.current;
@@ -66,8 +62,6 @@ function SliderMonths() {
       }
     }
   }, [currentMonthIndex]);
-
-  // console.log(previousMonthName);
 
   return (
     <div className="sliderMonth pt-[2rem] px-2">
