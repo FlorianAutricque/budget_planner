@@ -163,7 +163,11 @@ function PageMonth() {
   return (
     <div className="px-[1rem] w-full flex flex-col items-center">
       <div ref={pie} className="w-full md:w-[50%]">
-        <PieChart monthName={monthName} expensesName={expensesName} />
+        <PieChart
+          monthName={monthName}
+          expensesName={expensesName}
+          monthIdParsed={monthIdParsed}
+        />
       </div>
 
       <div className="w-full md:w-[50%]">

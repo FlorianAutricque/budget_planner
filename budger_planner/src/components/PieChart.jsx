@@ -1,7 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import { useTranslation } from "react-i18next";
 
-function PieChart({ monthName, expensesName }) {
+function PieChart({ monthName, expensesName, monthIdParsed }) {
   const { t } = useTranslation();
 
   const getOption = () => {
@@ -36,7 +36,7 @@ function PieChart({ monthName, expensesName }) {
           data: expensesName.map((expense) => ({
             value:
               parseFloat(
-                localStorage.getItem(`sum-${monthName}-${expense.id}`)
+                localStorage.getItem(`sum-${monthIdParsed}-${expense.id}`)
               ) || 0,
             name: expense.name,
           })),
