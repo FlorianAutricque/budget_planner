@@ -9,6 +9,7 @@ function Homepage({ month, name }) {
 
   const monthNames = Months();
   const displayValue = JSON.parse(localStorage.getItem("displayValue")) || {};
+  const currency = localStorage.getItem("selectedCurrency");
 
   //CURRENT MONTH
   const currentMonthId = month && month.id === 1 ? 12 : month ? month.id : 12;
@@ -34,7 +35,7 @@ function Homepage({ month, name }) {
     ? previousMonth.nameMonth
     : "Unknown Month";
 
-  //get previosu month with the id from LS
+  //get previous month with the id from LS
   const previousMonthSavings = Number(
     localStorage.getItem(`savings-${previousMonthId}`) || 0
   );
@@ -59,8 +60,6 @@ function Homepage({ month, name }) {
       MonthSpending: previousMonthSpending,
     },
   ];
-
-  const currency = localStorage.getItem("selectedCurrency");
 
   return (
     <div className="px-[1rem] flex flex-col items-center gap-8">
