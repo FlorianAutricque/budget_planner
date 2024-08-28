@@ -72,7 +72,7 @@ function SliderMonths() {
         <div
           id="slider"
           ref={sliderRef}
-          className="hide-scrollbar flex gap-8 overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
+          className="hide-scrollbar flex md:gap-[15rem]  gap-8 overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
           onClick={toggleActiveClass}
         >
           {months.map((month) => (
