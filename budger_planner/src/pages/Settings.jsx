@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function Settings() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const btnEuroRef = useRef(null);
   const btnDollarRef = useRef(null);
@@ -62,7 +62,7 @@ function Settings() {
   return (
     <div className="px-[1rem] flex flex-col items-center">
       <div className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4 mt-8 w-full md:w-[50%]">
-        <h3>Choose a currency</h3>
+        <h3>{t("SETTINGS.CURRENCY.TITLE")}</h3>
 
         <div className="flex justify-around w-[80%] rounded-xl border">
           <button
@@ -84,7 +84,7 @@ function Settings() {
       </div>
 
       <div className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4 w-full md:w-[50%]">
-        <h3>Choose a language</h3>
+        <h3>{t("SETTINGS.LNG.TITLE")}</h3>
         <div className="flex justify-around w-[80%] rounded-xl border">
           <button
             ref={btnFrenchRef}
