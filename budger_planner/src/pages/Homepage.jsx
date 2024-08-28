@@ -81,9 +81,9 @@ function Homepage({ month, name }) {
         {t("HOMEPAGE.BUTTON")}
       </NavLink>
 
-      <div className="mb-[8rem] w-full">
+      <div className="mb-[8rem] w-full md:w-[50%]">
         {monthData.map((data, index) => (
-          <div key={index}>
+          <div key={index} className="mb-8">
             <NavLink to={`/month/${data.MonthId}`} className="w-full">
               <div className="flex flex-col text-center rounded-3xl bg-white shadow-md mb-2 p-4">
                 <div>

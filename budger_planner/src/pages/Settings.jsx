@@ -60,8 +60,8 @@ function Settings() {
   };
 
   return (
-    <div className="px-[1rem]">
-      <div className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4 mt-8">
+    <div className="px-[1rem] flex flex-col items-center">
+      <div className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4 mt-8 w-full md:w-[50%]">
         <h3>Choose a currency</h3>
 
         <div className="flex justify-around w-[80%] rounded-xl border">
@@ -83,7 +83,7 @@ function Settings() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4">
+      <div className="flex flex-col items-center gap-4 rounded-3xl mb-8 bg-white shadow-md p-4 w-full md:w-[50%]">
         <h3>Choose a language</h3>
         <div className="flex justify-around w-[80%] rounded-xl border">
           <button

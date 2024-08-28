@@ -161,12 +161,12 @@ function PageMonth() {
   }
 
   return (
-    <div className="px-[1rem]">
-      <div ref={pie}>
+    <div className="px-[1rem] w-full flex flex-col items-center">
+      <div ref={pie} className="w-full md:w-[50%]">
         <PieChart monthName={monthName} expensesName={expensesName} />
       </div>
 
-      <div>
+      <div className="w-full md:w-[50%]">
         <div
           ref={salaryRef}
           className="flex items-center gap-4 rounded-3xl bg-white shadow-md mb-8 p-4"
