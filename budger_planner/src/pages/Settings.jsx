@@ -31,17 +31,20 @@ function Settings() {
     }
   }, [activeLanguage, activeCurrency]);
 
+  //LNG CHANGE
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("selectedLanguage", lng);
     setActiveLanguage(lng);
   };
 
+  //CURRENCY CHANGE
   const changeCurrency = (currency) => {
     localStorage.setItem("selectedCurrency", currency);
     setActiveCurrency(currency);
   };
 
+  //STYLING CLICKING BTN
   const handleClickBtn = (firstRef, secondRef, type, save = true) => {
     if (firstRef.current && secondRef.current) {
       firstRef.current.style.backgroundColor = "var(--btn-blue)";
